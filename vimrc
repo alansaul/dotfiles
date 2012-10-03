@@ -5,7 +5,7 @@ set hidden
 
 " let's copy paste some lines from documentation
 fun! SetupVAM()
-    let addons_base = expand('$HOME') . '/.vim/vim-addons'
+    let addons_base = expand('$HOME') . '/dotfiles/.vim/vim-addons'
     exec 'set runtimepath+='.addons_base.'/vim-addon-manager'
 
     if !isdirectory(addons_base)
@@ -17,22 +17,25 @@ fun! SetupVAM()
     let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/alansaul/snipmate-snippets.git' }
     "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
 
-    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'FuzzyFinder', 'Syntastic', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'pydoc%910', 'snipmate', 'snippets', 'vcscommand', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'vim-latex'], {'auto_install' : 1})
+    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'FuzzyFinder', 'Syntastic', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'python_pydoc', 'snipmate', 'snippets', 'vcscommand', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX'], {'auto_install' : 1})
 
 endf
 call SetupVAM()
 
 " backup swap files etc
 fun! SetupBACKUP()
-    let tmp_base = expand('$HOME') . '/.vim/tmp'
+    let tmp_base= expand('$HOME') . '/.vim/tmp'
     if !isdirectory(tmp_base)
         exec '!mkdir -p '.shellescape(tmp_base)
     endif
     if exists("&undodir")
-        set undodir=~/.vim/tmp/     " undo files
+        " undo files
+        exec 'set undodir='.tmp_base
     endif
-    set backupdir=~/.vim/tmp/   " backups
-    set directory=~/.vim/tmp/   " swap files
+    " backups
+    exec 'set backupdir='.tmp_base
+    " swap files
+    exec 'set directory='.tmp_base   
     set backup                        " enable backups
 endf
 call SetupBACKUP()
