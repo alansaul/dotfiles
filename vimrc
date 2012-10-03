@@ -24,7 +24,7 @@ call SetupVAM()
 
 " backup swap files etc
 fun! SetupBACKUP()
-    let tmp_base= expand('$HOME') . '/.vim/tmp'
+    let tmp_base= expand('$HOME') . '/dotfiles/.vim/tmp'
     if !isdirectory(tmp_base)
         exec '!mkdir -p '.shellescape(tmp_base)
     endif
