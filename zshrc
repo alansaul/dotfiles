@@ -41,7 +41,7 @@ export VERSIONER_PYTHON_PREFER_32_BIT=yes
 
 
 # Path to your oh-my-zsh configuration.
-ZSH=$HOME/dotfiles/.oh-my-zsh
+ZSH=$HOME/dotfiles/oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/

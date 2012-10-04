@@ -5,7 +5,7 @@ set hidden
 
 " let's copy paste some lines from documentation
 fun! SetupVAM()
-    let addons_base = expand('$HOME') . '/dotfiles/.vim/vim-addons'
+    let addons_base = expand('$HOME') . '/dotfiles/vim/vim-addons'
     exec 'set runtimepath+='.addons_base.'/vim-addon-manager'
 
     if !isdirectory(addons_base)
