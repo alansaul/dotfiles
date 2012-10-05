@@ -6,6 +6,12 @@ alias start-eclimd='/Applications/eclipse/eclimd'
 #Alias for zsh plugin which does safe deletion
 alias rm=trash
 
+export LS_OPTIONS='--color'
+alias l='ls $LS_OPTIONS'
+alias ll='ls $LS_OPTIONS -lh'
+alias lll='ls $LS_OPTIONS -alh'
+alias sl='ls $LS_OPTIONS' # often screw this up
+
 function detexcomment { cat "$1" | sed '/\\begin{comment}/,/\\end{comment}/d' | detex | wc; }
 
 #stty stop undef # to unmap ctrl-s 
@@ -49,6 +55,14 @@ ZSH=$HOME/dotfiles/oh-my-zsh
 # time that oh-my-zsh is loaded.
 #export ZSH_THEME="blinks-dark-bg"
 export ZSH_THEME="blinks"
+#export ZSH_THEME="robbyrussell"
+
+# For gnome set the ls colors to something proper may need changing for osx to check for the file
+# Color listing
+if [[ -e ~/.dircolors ]]; then
+    eval $(dircolors ~/.dircolors)
+    zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+fi
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
