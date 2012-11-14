@@ -8,7 +8,8 @@
 
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files="dircolors vimrc vim eclim zshrc oh-my-zsh tmux.conf"    # list of files/folders to symlink in homedir
+files="xmobarrc xmonad xsession xmodmap dircolors vimrc vim eclim zshrc oh-my-zsh tmux.conf"    # list of files/folders to symlink in homedir
+
 ##########
 
 # create dotfiles_old in homedir

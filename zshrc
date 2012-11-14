@@ -40,11 +40,10 @@ PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
 
 export WEBOTS_HOME=/Applications/Webots
 
-export PYTHONPATH=/Library/Python/2.6/site-packages:/opt/graphite/webapp:/opt/graphite/whisper:/Users/alansaul/Work/CompSci/Darwin/Code/darwinproject2011/DarwinTools:/Users/alansaul/Work/CompSci/Darwin/Code:/Users/alansaul/Work/Code/OpenCV/trunk:"${PYTHONPATH}"
+export PYTHONPATH=/Library/Python/2.6/site-packages:/home/alans/Work:/opt/graphite/webapp:/opt/graphite/whisper:/Users/alansaul/Work/CompSci/Darwin/Code/darwinproject2011/DarwinTools:/Users/alansaul/Work/CompSci/Darwin/Code:/Users/alansaul/Work/Code/OpenCV/trunk:"${PYTHONPATH}"
 
 #Force python to 32 bit
 export VERSIONER_PYTHON_PREFER_32_BIT=yes
-
 
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/dotfiles/oh-my-zsh

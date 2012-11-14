@@ -1,0 +1,4 @@
+! For xmodmap, remap caps to ctrl
+remove lock = Caps_Lock
+keysym Caps_Lock = ISO_Level5_Shift
+add control = ISO_Level5_Shift

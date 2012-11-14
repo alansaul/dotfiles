@@ -315,15 +315,22 @@ noremap <leader>lc :silent call Tex_RunLaTeX()<CR>
 
 " Auto commands {
 " Python {
+au BufRead,BufNewFile *.py set tabstop=4
 au BufRead,BufNewFile *.py set shiftwidth=4
 au BufRead,BufNewFile *.py set softtabstop=4 
 "}
 " Ruby {
 " ruby standard 2 spaces, always
-au BufRead,BufNewFile *.rb,*.rhtml set shiftwidth=2 
-au BufRead,BufNewFile *.rb,*.rhtml set softtabstop=2 
+au bufread,bufnewfile *.rb,*.rhtml set tabstop=2 
+au bufread,bufnewfile *.rb,*.rhtml set shiftwidth=2 
+au bufread,bufnewfile *.rb,*.rhtml set softtabstop=2 
 "If its an erb file, give html and ruby snippets
 au BufNewFile,BufRead *.html.erb set filetype=eruby.html
+"}
+" Haskell {
+au bufread,bufnewfile *.hs, set tabstop=8 
+au bufread,bufnewfile *.hs, set shiftwidth=8 
+au bufread,bufnewfile *.hs, set softtabstop=8 
 "}
 
 " If you prefer the Omni-Completion tip window to close when a selection is
@@ -339,7 +346,7 @@ au InsertLeave * if pumvisible() == 0|pclose|endif
 
 " Mappings {
 "Set up map leader
-let mapleader = '\'
+let mapleader = ';'
 
 " Fix D and Y
 nnoremap D d$
