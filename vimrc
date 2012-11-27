@@ -17,7 +17,7 @@ fun! SetupVAM()
     let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/alansaul/snipmate-snippets.git' }
     "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
 
-    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'FuzzyFinder', 'Syntastic', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'python_pydoc', 'snipmate', 'snippets', 'vcscommand', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX'], {'auto_install' : 1})
+    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'FuzzyFinder', 'Syntastic', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'python_pydoc', 'snipmate', 'snippets', 'vcscommand', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX', 'fugitive'], {'auto_install' : 1})
 
 endf
 call SetupVAM()

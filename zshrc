@@ -15,6 +15,14 @@ alias sl='ls $LS_OPTIONS' # often screw this up
 function detexcomment { cat "$1" | sed '/\\begin{comment}/,/\\end{comment}/d' | detex | wc; }
 
 #stty stop undef # to unmap ctrl-s 
+# Configure keyboard mode buttons
+if [ -f ~/.xmodmap ]; then
+    if [ $(which xmodmap) ]; then
+        xmodmap ~/.xmodmap
+    else
+        xmessage "warning: xmodmap not found"
+    fi
+fi
 
 # Bacward search in the shell history with <C-r>
 bindkey -v
