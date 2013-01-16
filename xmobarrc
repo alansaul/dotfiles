@@ -10,8 +10,9 @@ Config {
                     , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
                     , Run StdinReader
                     , Run Com "amixer get Master | egrep -o '[0-9]*%'" [] "vol" 30 
+                    , Run CommandReader "~/.pymodoro/pymodoro.py" "pomodoro"
                  ]
     , sepChar = "%"
     , alignSep = "}{"
-    , template = "%StdinReader% }{%multicpu% | %memory% * %swap% | Volume %vol% | <fc=#ee9a00>%date%</fc>"
+    , template = "%StdinReader% }{%pomodoro% | %multicpu% | %memory% * %swap% | Volume %vol% | <fc=#ee9a00>%date%</fc>"
     }

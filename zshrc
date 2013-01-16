@@ -12,17 +12,19 @@ alias ll='ls $LS_OPTIONS -lh'
 alias lll='ls $LS_OPTIONS -alh'
 alias sl='ls $LS_OPTIONS' # often screw this up
 
-function detexcomment { cat "$1" | sed '/\\begin{comment}/,/\\end{comment}/d' | detex | wc; }
+case "$OSTYPE" in
+   cygwin*)
+      alias uopen="cmd /c start"
+      ;;
+   linux*)
+      alias uopen='xdg-open' #make this linux only!
+      ;;
+   darwin*)
+      alias uopen='open' #make this linux only!
+      ;;
+esac
 
-#stty stop undef # to unmap ctrl-s 
-# Configure keyboard mode buttons
-if [ -f ~/.xmodmap ]; then
-    if [ $(which xmodmap) ]; then
-        xmodmap ~/.xmodmap
-    else
-        xmessage "warning: xmodmap not found"
-    fi
-fi
+function detexcomment { cat "$1" | sed '/\\begin{comment}/,/\\end{comment}/d' | detex | wc; }
 
 # Bacward search in the shell history with <C-r>
 bindkey -v
@@ -45,8 +47,6 @@ PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
 
 #Setup RVM (ruby version manager)
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
-
-export WEBOTS_HOME=/Applications/Webots
 
 export PYTHONPATH=/Library/Python/2.6/site-packages:/home/alans/Work:/opt/graphite/webapp:/opt/graphite/whisper:/Users/alansaul/Work/CompSci/Darwin/Code/darwinproject2011/DarwinTools:/Users/alansaul/Work/CompSci/Darwin/Code:/Users/alansaul/Work/Code/OpenCV/trunk:"${PYTHONPATH}"
 

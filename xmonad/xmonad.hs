@@ -23,7 +23,10 @@ additionalKeys conf@(XConfig { XMonad.modMask = modm }) = M.fromList $
         , ((0   , 0x1008FF11),        spawn "amixer set Master 2-")
         , ((0   , 0x1008FF13),        spawn "amixer set Master 2+")
         , ((0   , 0x1008FF12),        spawn "amixer -D pulse set Master 1+ toggle")
-        , ((modm, xK_F1),             spawn "sudo /sbin/shutdown -r now") -- reboot
+        , ((modm, xK_F1),             spawn "sudo shutdown -r now") -- reboot
+        , ((modm, xK_n),              spawn "touch ~/.pomodoro_session")
+        , ((modm ,              xK_Print ), spawn "scrot screen_%Y-%m-%d-%H-%M-%S.png -d 0.1 -e 'mv $f ~/Pictures/'") --take a screenshot of entire display
+        , ((modm .|. controlMask, xK_Print ), spawn "scrot window_%Y-%m-%d-%H-%M-%S.png -d 0.1 -u -e 'mv $f ~/Pictures/'") --take a screenshot of focused window
         ]
 myKeys = \c -> additionalKeys c `M.union` keys defaultConfig c
 
