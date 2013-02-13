@@ -1,0 +1,18 @@
+Config { 
+    font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
+    , bgColor = "black"
+    , fgColor = "grey"
+    , position = Top
+    , lowerOnStart = True
+    , commands = [    Run MultiCpu ["-t", "Cpu: <autototal>", "-H","75","--high","red"] 10
+                    , Run Memory ["-t","Mem: <usedratio>%"] 10
+                    , Run Swap [ ] 10
+                    , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+                    , Run StdinReader
+                    , Run Com "amixer get Master | egrep -o '[0-9]*%'" [] "vol" 30 
+                    , Run CommandReader "~/.pymodoro/pymodoro.py" "pomodoro"
+                 ]
+    , sepChar = "%"
+    , alignSep = "}{"
+    , template = "%StdinReader% }{%pomodoro% | %multicpu% | %memory% * %swap% | Volume %vol% | <fc=#ee9a00>%date%</fc>"
+    }

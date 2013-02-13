@@ -7,9 +7,25 @@ alias grep='grep --color=auto#'
 #Alias for zsh plugin which does safe deletion
 alias rm=trash
 
-function detexcomment { cat "$1" | sed '/\\begin{comment}/,/\\end{comment}/d' | detex | wc; }
+export LS_OPTIONS='--color'
+alias l='ls $LS_OPTIONS'
+alias ll='ls $LS_OPTIONS -lh'
+alias lll='ls $LS_OPTIONS -alh'
+alias sl='ls $LS_OPTIONS' # often screw this up
 
-#stty stop undef # to unmap ctrl-s 
+case "$OSTYPE" in
+   cygwin*)
+      alias uopen="cmd /c start"
+      ;;
+   linux*)
+      alias uopen='xdg-open' #make this linux only!
+      ;;
+   darwin*)
+      alias uopen='open' #make this linux only!
+      ;;
+esac
+
+function detexcomment { cat "$1" | sed '/\\begin{comment}/,/\\end{comment}/d' | detex | wc; }
 
 # Bacward search in the shell history with <C-r>
 export EDITOR="vim"
@@ -34,13 +50,10 @@ PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
 #Setup RVM (ruby version manager)
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
 
-export WEBOTS_HOME=/Applications/Webots
-
-export PYTHONPATH=/Library/Python/2.6/site-packages:/opt/graphite/webapp:/opt/graphite/whisper:/Users/alansaul/Work/CompSci/Darwin/Code/darwinproject2011/DarwinTools:/Users/alansaul/Work/CompSci/Darwin/Code:/Users/alansaul/Work/Code/OpenCV/trunk:"${PYTHONPATH}"
+export PYTHONPATH=/Library/Python/2.6/site-packages:/home/alans/Work:/opt/graphite/webapp:/opt/graphite/whisper:/Users/alansaul/Work/CompSci/Darwin/Code/darwinproject2011/DarwinTools:/Users/alansaul/Work/CompSci/Darwin/Code:/Users/alansaul/Work/Code/OpenCV/trunk:"${PYTHONPATH}"
 
 #Force python to 32 bit
 export VERSIONER_PYTHON_PREFER_32_BIT=yes
-
 
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/dotfiles/oh-my-zsh
@@ -51,6 +64,14 @@ ZSH=$HOME/dotfiles/oh-my-zsh
 # time that oh-my-zsh is loaded.
 #export ZSH_THEME="blinks-dark-bg"
 export ZSH_THEME="blinks"
+#export ZSH_THEME="robbyrussell"
+
+# For gnome set the ls colors to something proper may need changing for osx to check for the file
+# Color listing
+if [[ -e ~/.dircolors ]]; then
+    eval $(dircolors ~/.dircolors)
+    zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+fi
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
