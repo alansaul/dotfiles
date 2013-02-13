@@ -17,7 +17,7 @@ fun! SetupVAM()
     let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/alansaul/snipmate-snippets.git' }
     "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
 
-    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'FuzzyFinder', 'Syntastic', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'python_pydoc', 'snipmate', 'snippets', 'vcscommand', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX'], {'auto_install' : 1})
+    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'FuzzyFinder', 'Syntastic', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'python_pydoc', 'snipmate', 'snippets', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX', 'Python-mode-klen'], {'auto_install': 1})
 
 endf
 call SetupVAM()
@@ -118,7 +118,6 @@ set smartcase "But if it has a capital in it, then pay attention to case
 nnoremap n nzzzv
 nnoremap N Nzzzv
 "}
-
 
 syntax on
 set t_Co=256
@@ -239,8 +238,6 @@ map <silent> <F5>:!ctags -R --exclude=.svn --exclude=.git --exclude=log *<CR>
 "Set up tag toggle mapping
 nmap <leader>t :TagbarToggle<CR>
 
-"VCSCommand
-map <leader>zc :VCSCommit<CR>
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
@@ -339,7 +336,7 @@ au InsertLeave * if pumvisible() == 0|pclose|endif
 
 " Mappings {
 "Set up map leader
-let mapleader = '\'
+let mapleader = ';'
 
 " Fix D and Y
 nnoremap D d$
@@ -392,15 +389,15 @@ nmap <C-I> <C-A>
 " ==================
 "
 " Insert Mode
-inoremap <Up> <NOP>
-inoremap <Down> <NOP>
-inoremap <Left> <NOP>
-inoremap <Right> <NOP>
+"inoremap <Up> <NOP>
+"inoremap <Down> <NOP>
+"inoremap <Left> <NOP>
+"inoremap <Right> <NOP>
 " Normal Mode
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
+"noremap <Up> <NOP>
+"noremap <Down> <NOP>
+"noremap <Left> <NOP>
+"noremap <Right> <NOP>
 
 " Navigate Omnicomplete with jk
 inoremap <expr> i ((pumvisible())?("\<C-n>"):("i"))

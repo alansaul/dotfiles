@@ -3,6 +3,7 @@ alias sshdcs='ssh aca08ads@stulogin.dcs.shef.ac.uk'
 alias cdblog='cd ~/Work/Code/Websites/RailsBlog/'
 alias bx='bundle exec'
 alias start-eclimd='/Applications/eclipse/eclimd'
+alias grep='grep --color=auto#'
 #Alias for zsh plugin which does safe deletion
 alias rm=trash
 
@@ -11,7 +12,8 @@ function detexcomment { cat "$1" | sed '/\\begin{comment}/,/\\end{comment}/d' | 
 #stty stop undef # to unmap ctrl-s 
 
 # Bacward search in the shell history with <C-r>
-bindkey -v
+export EDITOR="vim"
+bindkey -v 
 bindkey '\e[3~' delete-char
 bindkey '^R' history-incremental-search-backward
 setopt hist_ignore_all_dups
