@@ -393,15 +393,15 @@ nmap <C-I> <C-A>
 " ==================
 "
 " Insert Mode
-inoremap <Up> <NOP>
-inoremap <Down> <NOP>
-inoremap <Left> <NOP>
-inoremap <Right> <NOP>
+"inoremap <Up> <NOP>
+"inoremap <Down> <NOP>
+"inoremap <Left> <NOP>
+"inoremap <Right> <NOP>
 " Normal Mode
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
+"noremap <Up> <NOP>
+"noremap <Down> <NOP>
+"noremap <Left> <NOP>
+"noremap <Right> <NOP>
 
 " Navigate Omnicomplete with jk
 inoremap <expr> i ((pumvisible())?("\<C-n>"):("i"))

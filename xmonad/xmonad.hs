@@ -37,7 +37,7 @@ myManageHook = composeAll
 myManageHookWithDefaults = manageDocks <+> myManageHook <+> manageHook defaultConfig
 
 -- My workspaces
-myWorkspaces = ["1:web", "2:code", "3:irc"] ++ map show [4..9]
+myWorkspaces = ["1:web", "2:code", "3:irc", "4:papers", "5:tex"] ++ map show [6..9]
 
 -- My layout management
 basicLayout = Tall nmaster delta ratio where
