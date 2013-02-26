@@ -29,6 +29,7 @@ function detexcomment { cat "$1" | sed '/\\begin{comment}/,/\\end{comment}/d' | 
 
 # Bacward search in the shell history with <C-r>
 export EDITOR="vim"
+set editing-mode vi
 bindkey -v 
 bindkey '\e[3~' delete-char
 bindkey '^R' history-incremental-search-backward

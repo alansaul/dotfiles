@@ -15,9 +15,10 @@ fun! SetupVAM()
     let g:vim_addon_manager = {}
     let g:vim_addon_manager['plugin_sources'] = {}
     let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/alansaul/snipmate-snippets.git' }
+    let g:vim_addon_manager['plugin_sources']['jedi-vim'] = { 'type' : 'git', 'url': 'git://github.com/davidhalter/jedi-vim.git' }
     "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
 
-    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'FuzzyFinder', 'Syntastic', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'python_pydoc', 'snipmate', 'snippets', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX', 'Python-mode-klen', 'fugitive'], {'auto_install': 1})
+    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'Syntastic', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'python_pydoc', 'UltiSnips', 'snippets', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX', 'Python-mode-klen', 'fugitive', 'jedi-vim'], {'auto_install': 1})
 
 endf
 call SetupVAM()
@@ -40,6 +41,8 @@ fun! SetupBACKUP()
 endf
 call SetupBACKUP()
 
+"Make it so commands are run on the shell that it was loaded with (zsh)
+"set shell=$SHELL\ -i
 
 " General {
 " try to detect filetypes
@@ -105,9 +108,11 @@ set showmatch " show matching brackets
 "Search {
 " Remove search highlighting with <C-L>
 "CONFLICT WITH SWITCH BUFFER
-nnoremap <C-L> :nohls<CR><C-L>
+noremap <C-L><C-L> <Esc>:syntax sync fromstart<CR>:let @/=""<CR>
+inoremap <C-L><C-L> <C-o>:syntax sync fromstart<CR>:let @/=""<CR>
+nnoremap <C-L> :nohls<CR>
 " Clear the search term so (n and p no longer search again
-map <C-L><C-L> :let @/=""<CR>
+"map <C-L><C-L> :let @/=""<CR>
 set hlsearch " Highlight searched terms
 set incsearch " BUT do highlight as you type you search phrase
 set ignorecase "Ignore case normally
@@ -120,7 +125,9 @@ nnoremap N Nzzzv
 "}
 
 syntax on
-set t_Co=256
+if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
+    set t_Co=256
+endif
 set background=dark
 "let g:solarized_termcolors=256
 "let g:solarized_visibility="low"
@@ -195,6 +202,12 @@ set statusline+=%*
 let g:syntastic_enable_signs=1 "enable signs in side bar
 let g:syntastic_auto_loc_list=2
 
+"PYMODE
+"imap <C-A> <C-R>=RopeCodeAssistInsertMode()<CR>
+
+"Jedi
+let g:jedi#autocompletion_command = "<C-A>"
+
 "TASK LIST
 " Toggle task list (type \td to see a list of TODO:'s etc"
 map <leader>td <Plug>TaskList
@@ -225,22 +238,39 @@ map <Leader>n :NERDTreeToggle<CR>
 
 "FUZZY FINDER
 "Recusively find from current directory downward
-map <leader>f :call fuf#givenfile#launch('', 0, '> ', split(glob('./**/*'), "\n"))<CR>
+"map <leader>f :call fuf#givenfile#launch('', 0, '> ', split(glob('./**/*'), "\n"))<CR>
 "find from parent directory aswell
-map <leader>F :call fuf#givenfile#launch('', 0, '> ', split(glob('../**/*'), "\n"))<CR>
+"map <leader>F :call fuf#givenfile#launch('', 0, '> ', split(glob('../**/*'), "\n"))<CR>
 "map <leader>F :FufFile<CR>
 "map <leader>FT :FufTaggedFile<CR>
 "map <leader>s :FufTag<CR>
+"
+"CtrlP
+let g:ctrlp_map = '<leader>f'
 
 "EXUBERANT TAGS
 " Remake ctags with F5
-map <silent> <F5>:!ctags -R --exclude=.svn --exclude=.git --exclude=log *<CR>
+map <silent> <F6> :!ctags -R --exclude=.svn --exclude=.git --exclude=log .<CR>
+map <F7> :!ctags -R --exclude=.svn --exclude=.git --exclude=log .<CR>
 "Set up tag toggle mapping
 nmap <leader>t :TagbarToggle<CR>
+"Tell it where to find tags
+"autocmd BufWritePost *
+      "\ if filereadable('tags') |
+      "\   call system('ctags -R .') |
+      "\ endif
+"set tags=./tags,tags;$HOME
 
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 "
+
+"Ultisnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "vim-addons/snippets/snippets"]
+
 "Snipmate
 "function SnipPath ()
 "    return split(&runtimepath,',') + [g:vim_addon_manager.plugin_root_dir+'/snipmate-snippets']
@@ -347,20 +377,31 @@ let mapleader = ';'
 " Fix D and Y
 nnoremap D d$
 nnoremap Y y$
+"
+"Fix J so it doesnt drop down a line when you join
+nnoremap J mzJ`z
 
 " Make it so j and k navigate up and down regardless of whether 2 lines is
 " actually 1!
-"nmap j gj
-"nmap k gk
+nmap j gj
+nmap k gk
+
+map q: :q
 
 :command TODO :noautocmd vimgrep /TODO/jg **/* | copen
 :command FIXME :noautocmd vimgrep /FIXME/jg **/* | copen
 :command TODOrb :silent! noautocmd vimgrep /TODO/jg **/*.rb **/*.feature **/*.html **/*.haml **/*.scss **/*.css | copen
 :command FIXMErb :silent! noautocmd vimgrep /FIXME/jg **/*.rb **/*.feature **/*.html **/*.haml **/*.scss **/*.css | copen
 
+
 "Clear the quickfix (useful when you've done a TODOrb and want to get rid of
 "the results!)
 :command Clearqf :cex [] 
+"Close quickfix if only window open
+aug QFClose
+  au!
+  au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&buftype") == "quickfix"|q|endif
+aug END
 
 " Escape remap! Finally committed
 inoremap jj <esc>
@@ -380,7 +421,7 @@ nnoremap <Space> za
 vnoremap <Space> za
 
 " Command to run current script by typing ;e
-map ;p :w<CR>:exe ":!python " . getreg("%") . "" <CR>
+"map ;p :w<CR>:exe ":!python " . getreg("%") . "" <CR>
 
 "Add a new line
 nmap <CR> O<ESC>j
