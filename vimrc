@@ -14,7 +14,7 @@ fun! SetupVAM()
 
     let g:vim_addon_manager = {}
     let g:vim_addon_manager['plugin_sources'] = {}
-    let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/alansaul/snipmate-snippets.git' }
+    let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/alansaul/ultisnips-snippets.git' }
     let g:vim_addon_manager['plugin_sources']['jedi-vim'] = { 'type' : 'git', 'url': 'git://github.com/davidhalter/jedi-vim.git' }
     "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
 
