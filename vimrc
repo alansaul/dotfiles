@@ -23,23 +23,38 @@ fun! SetupVAM()
 endf
 call SetupVAM()
 
-" backup swap files etc
-fun! SetupBACKUP()
-    let tmp_base= expand('$HOME') . '/dotfiles/vim/tmp'
-    if !isdirectory(tmp_base)
-        exec '!mkdir -p '.shellescape(tmp_base)
+
+"Neat directory initalization, ripped form
+"https://github.com/spf13/spf13-vim/blob/master/.vimrc
+function! InitializeDirectories()
+    let separator = "."
+    let parent = $HOME
+    let prefix = '.vim'
+    let dir_list = {
+                \ 'backup': 'backupdir',
+                \ 'swap': 'directory' }
+
+    if has('persistent_undo')
+        let dir_list['undo'] = 'undodir'
     endif
-    if exists("&undodir")
-        " undo files
-        exec 'set undodir='.tmp_base
-    endif
-    " backups
-    exec 'set backupdir='.tmp_base
-    " swap files
-    exec 'set directory='.tmp_base   
-    set backup                        " enable backups
-endf
-call SetupBACKUP()
+
+    for [dirname, settingname] in items(dir_list)
+        let directory = parent . '/' . prefix . dirname . "/"
+        if exists("*mkdir")
+            if !isdirectory(directory)
+                call mkdir(directory)
+            endif
+        endif
+        if !isdirectory(directory)
+            echo "Warning: Unable to create backup directory: " . directory
+            echo "Try: mkdir -p " . directory
+        else
+            let directory = substitute(directory, " ", "\\\\ ", "g")
+            exec "set " . settingname . "=" . directory
+        endif
+    endfor
+endfunction
+call InitializeDirectories()
 
 "Make it so commands are run on the shell that it was loaded with (zsh)
 "set shell=$SHELL\ -i
@@ -154,11 +169,11 @@ func! ToggleNumbers()
     "nu -> nonu -> rnu
     if exists('&rnu')
         if &rnu == 1
-            set nu 
+            set nu
         elseif &nu == 1
             set nonu
         else
-            set rnu 
+            set rnu
         endif
     else
         setl nu!
@@ -171,10 +186,13 @@ endfunc
 
 let g:syntastic_python_checker = 'pyflakes' "This is a bit of a hack, this should be default? Syntastic will spaz out if you dont have pyflakes (which you should) on the PATH
 
+
 set statusline=%f    " Path.
 set statusline+=%m   " Modified flag.
 set statusline+=%r   " Readonly flag.
 set statusline+=%w   " Preview window flag.
+set statusline+=\ [%{getcwd()}]          " current dir
+set statusline+=%{fugitive#statusline()} "  Git Hotness
 
 set statusline+=\    " Space.
 
@@ -184,14 +202,6 @@ set statusline+=%*                           " Reset highlighting.
 
 set statusline+=%=   " Right align.
 
-" File format, encoding and type.  Ex: "(unix/utf-8/python)"
-set statusline+=(
-set statusline+=%{&ff}                        " Format (unix/DOS).
-set statusline+=/
-set statusline+=%{strlen(&fenc)?&fenc:&enc}   " Encoding (utf-8).
-set statusline+=/
-set statusline+=%{&ft}                        " Type (python).
-set statusline+=)
 
 " Line and column position and counts.
 set statusline+=\ (line\ %l\/%L,\ col\ %03c)
@@ -247,6 +257,8 @@ map <Leader>n :NERDTreeToggle<CR>
 "
 "CtrlP
 let g:ctrlp_map = '<leader>f'
+nnoremap <leader>F :CtrlPBuffer<cr>
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc     " Linux/MacOSX
 
 "EXUBERANT TAGS
 " Remake ctags with F5
@@ -270,26 +282,6 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "vim-addons/snippets/snippets"]
-
-"Snipmate
-"function SnipPath ()
-"    return split(&runtimepath,',') + [g:vim_addon_manager.plugin_root_dir+'/snipmate-snippets']
-"endfunction
-let g:snipMate = {}
-"let g:snipMate['snippet_dirs'] = {'faked_function_reference': 'return split(&runtimepath,",") + [g:vim_addon_manager.plugin_root_dir]'}
-
-let g:snipMate['scope_aliases'] = get(g:snipMate,'scope_aliases',
-          \ {'objc' :'c'
-          \ ,'cpp': 'c'
-          \ ,'cs':'c'
-          \ ,'xhtml': 'html'
-          \ ,'html': 'javascript'
-          \ ,'php': 'php,html,javascript'
-          \ ,'ur': 'html,javascript'
-          \ ,'mxml': 'actionscript'
-          \ ,'eruby': 'eruby-rails'
-          \ ,'ruby': 'ruby,ruby-rails,ruby-rspec,ruby-shoulda,ruby-factorygirl'
-          \ } )
 
 "Pydoc
 " Type <leader>pw to list the python docs of the word under the cursor or 
@@ -387,6 +379,10 @@ nmap j gj
 nmap k gk
 
 map q: :q
+" Save a read only file using sudo tee %
+cnoreabbrev <expr> w!!
+            \((getcmdtype() == ':' && getcmdline() == 'w!!')
+            \?('!sudo tee % >/dev/null'):('w!!'))
 
 :command TODO :noautocmd vimgrep /TODO/jg **/* | copen
 :command FIXME :noautocmd vimgrep /FIXME/jg **/* | copen
@@ -407,11 +403,10 @@ aug END
 inoremap jj <esc>
 
 " Easier buffer navigation
-noremap <C-h> <C-w>h
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
-"CONFLICT WITH CLEAR!
-noremap <C-l> <C-w>l
+noremap <leader>h <C-w>h
+noremap <leader>j <C-w>j
+noremap <leader>k <C-w>k
+noremap <leader>l <C-w>l
 nnoremap <c-left> 5<c-w>>
 nnoremap <c-right> 5<c-w><
 
@@ -426,7 +421,7 @@ vnoremap <Space> za
 "Add a new line
 nmap <CR> O<ESC>j
 "But not for quickfix windows! (in qf the enter should go to the error!)
-autocmd FileType qf nnoremap <buffer> <CR> <CR> 
+autocmd FileType qf nnoremap <buffer> <CR> <CR>
 
 "Remap increment number from <C-A> (which is used in screen) to <C-I>
 nmap <C-I> <C-A>
@@ -460,3 +455,6 @@ nnoremap ` '
 " ROT13 - fun
 map <leader>r ggVGg?
 " }
+"
+map <C-D> /def d<CR>fdl"py/_<CR>
+map <C-F> :s/partial/dL_dp/g<CR>
