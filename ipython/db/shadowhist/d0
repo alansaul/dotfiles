@@ -1,0 +1,10 @@
+(dp1
+Vb[1,2] = 18
+p2
+I11
+sVfor i in range(-10, 10, 1):\u000a    for j in range(-10,-10, 1):\u000a        print i, j
+p3
+I98
+sVQ
+I105
+s.

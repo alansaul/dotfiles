@@ -1,0 +1,8 @@
+(dp1
+Vfor i in range(-10, 10):\u000a    for j in range(-10,-10):\u000a        print i, j
+p2
+I97
+sVsys.path
+p3
+I138
+s.

@@ -1,0 +1,8 @@
+(dp1
+Vx*x.T
+p2
+I41
+sVfor i in range(10):\u000a    for j in range(10):\u000a        print i, j
+p3
+I73
+s.

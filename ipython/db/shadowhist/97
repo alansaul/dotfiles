@@ -1,0 +1,5 @@
+(dp1
+Vfor i in range(10):\u000a    for j in range(10):\u000a        linkerna[i,j] = linkern(np.array(i), np.array(j))
+p2
+I91
+s.
