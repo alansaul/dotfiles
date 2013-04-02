@@ -185,8 +185,7 @@ endfunc
 "Plugin settings {
 "Syntastic (And status line, taken from Steve Losh
 
-let g:syntastic_python_checker = 'pyflakes' "This is a bit of a hack, this should be default? Syntastic will spaz out if you dont have pyflakes (which you should) on the PATH
-
+"let g:syntastic_python_checker = 'pyflakes' "This is a bit of a hack, this should be default? Syntastic will spaz out if you dont have pyflakes (which you should) on the PATH
 
 set statusline=%f    " Path.
 set statusline+=%m   " Modified flag.
@@ -214,10 +213,12 @@ let g:syntastic_enable_signs=1 "enable signs in side bar
 let g:syntastic_auto_loc_list=2
 
 "PYMODE
-"imap <C-A> <C-R>=RopeCodeAssistInsertMode()<CR>
+imap <C-A> <C-R>=RopeCodeAssistInsertMode()<CR>
+let g:pymode_lint_checker = "pep8"
+let g:pymode_lint_ignore="E225,E501"
 
 "Jedi
-let g:jedi#autocompletion_command = "<C-A>"
+"let g:jedi#autocompletion_command = "<C-A>"
 
 "TASK LIST
 " Toggle task list (type \td to see a list of TODO:'s etc"
