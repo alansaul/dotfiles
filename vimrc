@@ -442,8 +442,8 @@ nmap <C-I> <C-A>
 "noremap <Right> <NOP>
 
 " Navigate Omnicomplete with jk
-inoremap <expr> i ((pumvisible())?("\<C-n>"):("i"))
-inoremap <expr> o ((pumvisible())?("\<C-p>"):("o"))
+"inoremap <expr> i ((pumvisible())?("\<C-n>"):("i"))
+"inoremap <expr> o ((pumvisible())?("\<C-p>"):("o"))
 
 "Set up remaps for markers as ' is easier to press. Normally ' goes to the
 "line of the marker, and ` goes to the column and line of the marker, here I

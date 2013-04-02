@@ -51,7 +51,7 @@ PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
 #Setup RVM (ruby version manager)
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
 
-export PYTHONPATH=/Library/Python/2.6/site-packages:/home/alans/Work/GPy:/home/alans/Work:/opt/graphite/webapp:/opt/graphite/whisper:/Users/alansaul/Work/CompSci/Darwin/Code/darwinproject2011/DarwinTools:/Users/alansaul/Work/CompSci/Darwin/Code:/Users/alansaul/Work/Code/OpenCV/trunk:"${PYTHONPATH}"
+export PYTHONPATH=/Library/Python/2.6/site-packages:/home/alans/Work/GPy:/Users/alansaul/Work/CompSci/PhD:/home/alans/Work:/home/alans/Work:/opt/graphite/webapp:/opt/graphite/whisper:/Users/alansaul/Work/CompSci/Darwin/Code/darwinproject2011/DarwinTools:/Users/alansaul/Work/CompSci/Darwin/Code:/Users/alansaul/Work/Code/OpenCV/trunk:"${PYTHONPATH}"
 
 #Force python to 32 bit
 export VERSIONER_PYTHON_PREFER_32_BIT=yes
