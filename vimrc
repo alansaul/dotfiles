@@ -222,7 +222,7 @@ let g:pymode_lint_ignore="E225,E501"
 
 "TASK LIST
 " Toggle task list (type \td to see a list of TODO:'s etc"
-map <leader>td <Plug>TaskList
+noremap <leader>td <Plug>TaskList
 
 " TagList Settings {
 let Tlist_Auto_Open=0 " let the tag list open automagically
@@ -246,17 +246,8 @@ let g:rails_default_file='config/database.yml'
 
 "NERDTREE
 " Setup nerd tree shortcut to see directory listings
-map <Leader>n :NERDTreeToggle<CR>  
+noremap <Leader>n :NERDTreeToggle<CR>  
 
-"FUZZY FINDER
-"Recusively find from current directory downward
-"map <leader>f :call fuf#givenfile#launch('', 0, '> ', split(glob('./**/*'), "\n"))<CR>
-"find from parent directory aswell
-"map <leader>F :call fuf#givenfile#launch('', 0, '> ', split(glob('../**/*'), "\n"))<CR>
-"map <leader>F :FufFile<CR>
-"map <leader>FT :FufTaggedFile<CR>
-"map <leader>s :FufTag<CR>
-"
 "CtrlP
 let g:ctrlp_map = '<leader>f'
 nnoremap <leader>F :CtrlPBuffer<cr>
@@ -264,10 +255,10 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc     " Linux/MacOSX
 
 "EXUBERANT TAGS
 " Remake ctags with F5
-map <silent> <F6> :!ctags -R --exclude=.svn --exclude=.git --exclude=log .<CR>
-map <F7> :!ctags -R --exclude=.svn --exclude=.git --exclude=log .<CR>
+noremap <silent> <F6> :!ctags -R --exclude=.svn --exclude=.git --exclude=log .<CR>
+noremap <F7> :!ctags -R --exclude=.svn --exclude=.git --exclude=log .<CR>
 "Set up tag toggle mapping
-nmap <leader>t :TagbarToggle<CR>
+nnoremap <leader>t :TagbarToggle<CR>
 "Tell it where to find tags
 "autocmd BufWritePost *
       "\ if filereadable('tags') |
@@ -389,32 +380,31 @@ nnoremap J mzJ`z
 
 " Make it so j and k navigate up and down regardless of whether 2 lines is
 " actually 1!
-nmap j gj
-nmap k gk
+nnoremap j gj
+nnoremap k gk
 
-map q: :q
+noremap q: :q
 " Save a read only file using sudo tee %
 cnoreabbrev <expr> w!!
             \((getcmdtype() == ':' && getcmdline() == 'w!!')
             \?('!sudo tee % >/dev/null'):('w!!'))
 
-:command TODO :noautocmd vimgrep /TODO/jg **/* | copen
-:command FIXME :noautocmd vimgrep /FIXME/jg **/* | copen
-:command TODOrb :silent! noautocmd vimgrep /TODO/jg **/*.rb **/*.feature **/*.html **/*.haml **/*.scss **/*.css | copen
-:command FIXMErb :silent! noautocmd vimgrep /FIXME/jg **/*.rb **/*.feature **/*.html **/*.haml **/*.scss **/*.css | copen
+":command TODO :noautocmd vimgrep /TODO/jg **/* | copen
+":command FIXME :noautocmd vimgrep /FIXME/jg **/* | copen
+":command TODOrb :silent! noautocmd vimgrep /TODO/jg **/*.rb **/*.feature **/*.html **/*.haml **/*.scss **/*.css | copen
+":command FIXMErb :silent! noautocmd vimgrep /FIXME/jg **/*.rb **/*.feature **/*.html **/*.haml **/*.scss **/*.css | copen
 
 
 "Clear the quickfix (useful when you've done a TODOrb and want to get rid of
 "the results!)
-:command Clearqf :cex [] 
+":command Clearqf :cex [] 
+
 "Close quickfix if only window open
 aug QFClose
   au!
   au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&buftype") == "quickfix"|q|endif
 aug END
 
-" Escape remap! Finally committed
-inoremap jj <esc>
 
 " Easier buffer navigation
 noremap <leader>h <C-w>h
@@ -433,12 +423,12 @@ vnoremap <Space> za
 "map ;p :w<CR>:exe ":!python " . getreg("%") . "" <CR>
 
 "Add a new line
-nmap <CR> O<ESC>j
+nnoremap <CR> O<ESC>j
 "But not for quickfix windows! (in qf the enter should go to the error!)
 autocmd FileType qf nnoremap <buffer> <CR> <CR>
 
 "Remap increment number from <C-A> (which is used in screen) to <C-I>
-nmap <C-I> <C-A>
+nnoremap <C-I> <C-A>
 
 " DISABLE ARROW KEYS < Just comment this out if you wan't arrow keys to work
 " again
@@ -467,8 +457,14 @@ nnoremap ' `
 nnoremap ` '
 
 " ROT13 - fun
-map <leader>r ggVGg?
+noremap <leader>r ggVGg?
 " }
 "
-map <C-D> /def d<CR>fdl"py/_<CR>
-map <C-F> :s/partial/dL_dp/g<CR>
+
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" Escape remap! Finally committed
+inoremap jj <esc>
+"Forget about <esc> we want to get used to jj
+inoremap <esc> <nop>
