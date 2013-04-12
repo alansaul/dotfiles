@@ -3,3 +3,5 @@ xmonad/xmonad-x86_64-linux
 xmonad/xmonad.hi
 xmonad/xmonad.o
 oh-my-zsh/
+ipython/profile_science/db
+ipython/profile_science/history.sqlite
