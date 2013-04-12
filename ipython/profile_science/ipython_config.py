@@ -72,7 +72,11 @@ c.InteractiveShellApp.pylab = None
 # c.TerminalIPythonApp.display_banner = True
 
 # lines of code to run at IPython startup.
-c.TerminalIPythonApp.exec_lines = ['%load_ext autoreload', '%autoreload 2']
+c.TerminalIPythonApp.exec_lines = ['%load_ext autoreload',
+                                   '%autoreload 2',
+                                   'import numpy as np',
+                                   'import scipy as sp',
+                                   'import matplotlib.pyplot as plt']
 
 # Enable GUI event loop integration ('qt', 'wx', 'gtk', 'glut', 'pyglet',
 # 'osx').

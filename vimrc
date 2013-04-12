@@ -299,6 +299,18 @@ let g:UltiSnipsSnippetDirectories=["UltiSnips", "vim-addons/snippets/snippets"]
 "ipython loaded)
 
 "vim-latex
+" Set colorscheme, enable conceal (except for
+" subscripts/superscripts), and match conceal
+" highlight to colorscheme
+" let g:tex_conceal= 'adgm'
+" hi Conceal guibg=brblack guifg=brcyan
+"hi Conceal cterm=NONE ctermbg=NONE ctermfg=white
+"au VimEnter * hi Conceal cterm=NONE ctermbg=NONE ctermfg=white
+"au VimEnter * set conceallevel=2
+au ColorScheme * hi! link Conceal Normal
+set cole=2
+let g:tex_conceal="asgm"
+
 let g:tex_flavor = "latex"
 let g:Tex_DefaultTargetFormat = 'pdf'
  
