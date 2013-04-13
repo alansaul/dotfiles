@@ -1,0 +1,10 @@
+(dp1
+Vb
+I9
+sVp.read_table('auto-mpg.data')
+p2
+I152
+sVnp.dot(np.dot(m.T,epsilon.T), x)
+p3
+I120
+s.

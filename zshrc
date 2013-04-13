@@ -1,5 +1,6 @@
 #alias python='python -B'
-alias sshdcs='ssh aca08ads@stulogin.dcs.shef.ac.uk'
+alias sshdcs='ssh acp12ads@stulogin.dcs.shef.ac.uk'
+alias ipythons='ipython --profile=science'
 alias cdblog='cd ~/Work/Code/Websites/RailsBlog/'
 alias bx='bundle exec'
 alias start-eclimd='/Applications/eclipse/eclimd'

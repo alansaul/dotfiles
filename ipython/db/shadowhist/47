@@ -1,0 +1,8 @@
+(dp1
+Vpredict_X
+p2
+I182
+sVplt.scatter(auto_data[:,5], auto_data[:,0])
+p3
+I173
+s.

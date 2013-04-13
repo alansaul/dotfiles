@@ -1,0 +1,8 @@
+(dp1
+Vimport numpy
+p2
+I2
+sVmatshow(np.outer(x,x))
+p3
+I50
+s.

@@ -1,0 +1,14 @@
+(dp1
+Vmatshow(linkerna)
+p2
+I96
+sVrbf = ones((20,20))
+p3
+I101
+sVdata = p.read_table('auto-mpg.data')
+p4
+I153
+sVfor i in range(10):\u000a    for j in reverse(range(10))\u000a        rbfkern[i,j] = k(np.array(i), np.array(j))
+p5
+I81
+s.

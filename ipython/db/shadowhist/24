@@ -1,0 +1,11 @@
+(dp1
+Vf = np.random.multivariate_normal([0.0 for i in range(len(x))], ones(len(x))*25)
+p2
+I57
+sVQ[1,1] = np.cos(theta)
+p3
+I108
+sVimport gpy as gp
+p4
+I135
+s.

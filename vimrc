@@ -18,7 +18,8 @@ fun! SetupVAM()
     let g:vim_addon_manager['plugin_sources']['jedi-vim'] = { 'type' : 'git', 'url': 'git://github.com/davidhalter/jedi-vim.git' }
     "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
 
-    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'Syntastic', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'python_pydoc', 'UltiSnips', 'snippets', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX', 'Python-mode-klen', 'fugitive', 'jedi-vim'], {'auto_install': 1})
+    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'Syntastic', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'python_pydoc', 'UltiSnips', 'snippets', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX', 'Python-mode-klen', 'fugitive'], {'auto_install': 1})
+    ", 'jedi-vim'
 
 endf
 call SetupVAM()
@@ -186,7 +187,6 @@ endfunc
 
 "let g:syntastic_python_checker = 'pyflakes' "This is a bit of a hack, this should be default? Syntastic will spaz out if you dont have pyflakes (which you should) on the PATH
 
-
 set statusline=%f    " Path.
 set statusline+=%m   " Modified flag.
 set statusline+=%r   " Readonly flag.
@@ -214,10 +214,12 @@ let g:syntastic_auto_loc_list=2
 
 "PYMODE
 "imap <C-A> <C-R>=RopeCodeAssistInsertMode()<CR>
-let g:pymode_lint = 0
+let g:pymode_lint = 1
 let g:pymode_rope = 1
 let g:pymode_folding = 0
-let g:pymode_lint_write = 0
+let g:pymode_lint_write = 1
+let g:pymode_lint_checker = "pep8"
+let g:pymode_lint_ignore="E225,E501"
 
 "Jedi
 let g:jedi#autocompletion_command = "<C-A>"
@@ -294,6 +296,18 @@ let g:UltiSnipsSnippetDirectories=["UltiSnips", "vim-addons/snippets/snippets"]
 "ipython loaded)
 
 "vim-latex
+" Set colorscheme, enable conceal (except for
+" subscripts/superscripts), and match conceal
+" highlight to colorscheme
+" let g:tex_conceal= 'adgm'
+" hi Conceal guibg=brblack guifg=brcyan
+"hi Conceal cterm=NONE ctermbg=NONE ctermfg=white
+"au VimEnter * hi Conceal cterm=NONE ctermbg=NONE ctermfg=white
+"au VimEnter * set conceallevel=2
+au ColorScheme * hi! link Conceal Normal
+set cole=2
+let g:tex_conceal="asgm"
+
 let g:tex_flavor = "latex"
 let g:Tex_DefaultTargetFormat = 'pdf'
  
