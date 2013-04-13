@@ -91,7 +91,7 @@ fi
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(rails3 git ruby macports gem github osx rvm vi-mode python autojump)
+plugins=(git ruby macports gem github osx vi-mode python autojump colored-man extract)
 #autojumo you press j Darwin and it will jump to the most likely directory
 #extract something.tar.gz will extract pretty much any compression type
 #pyclean deletes all .pyc files and pyfind finds all .py files

@@ -184,7 +184,7 @@ endfunc
 "Plugin settings {
 "Syntastic (And status line, taken from Steve Losh
 
-let g:syntastic_python_checker = 'pyflakes' "This is a bit of a hack, this should be default? Syntastic will spaz out if you dont have pyflakes (which you should) on the PATH
+"let g:syntastic_python_checker = 'pyflakes' "This is a bit of a hack, this should be default? Syntastic will spaz out if you dont have pyflakes (which you should) on the PATH
 
 
 set statusline=%f    " Path.
@@ -214,9 +214,15 @@ let g:syntastic_auto_loc_list=2
 
 "PYMODE
 "imap <C-A> <C-R>=RopeCodeAssistInsertMode()<CR>
+let g:pymode_lint = 0
+let g:pymode_rope = 1
+let g:pymode_folding = 0
+let g:pymode_lint_write = 0
 
 "Jedi
 let g:jedi#autocompletion_command = "<C-A>"
+let g:jedi#use_tabs_not_buffers = 0
+let g:jedi#popup_on_dot = 0
 
 "TASK LIST
 " Toggle task list (type \td to see a list of TODO:'s etc"
@@ -360,7 +366,7 @@ let mapleader = ';'
 " Fix D and Y
 nnoremap D d$
 nnoremap Y y$
-"
+
 "Fix J so it doesnt drop down a line when you join
 nnoremap J mzJ`z
 
@@ -404,6 +410,12 @@ nnoremap <c-right> 5<c-w><
 " Space to toggle folds.
 nnoremap <Space> za
 vnoremap <Space> za
+
+" Fix tmux's mappings for arrow keys
+noremap OA <up>
+noremap OB <down>
+noremap OC <right>
+noremap OD <left>
 
 " Command to run current script by typing ;e
 "map ;p :w<CR>:exe ":!python " . getreg("%") . "" <CR>
@@ -453,4 +465,4 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " Escape remap! Finally committed
 inoremap jj <esc>
 "Forget about <esc> we want to get used to jj
-inoremap <esc> <nop>
+"inoremap <esc> <nop>
