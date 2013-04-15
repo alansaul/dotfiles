@@ -16,10 +16,10 @@ fun! SetupVAM()
     let g:vim_addon_manager['plugin_sources'] = {}
     let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/alansaul/ultisnips-snippets.git' }
     let g:vim_addon_manager['plugin_sources']['jedi-vim'] = { 'type' : 'git', 'url': 'git://github.com/davidhalter/jedi-vim.git' }
-    "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
+    "let g:vim_addon_manager['plugin_sources']['tma-multiple-cursors'] = { 'type' : 'git', 'url': 'git://github.com/terryma/vim-multiple-cursors.git' }
 
-    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'Syntastic', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'python_pydoc', 'UltiSnips', 'snippets', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX', 'Python-mode-klen', 'fugitive'], {'auto_install': 1})
-    ", 'jedi-vim'
+    "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
+    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'UltiSnips', 'snippets', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX', 'Python-mode-klen', 'fugitive', 'jedi-vim'], {'auto_install': 1})
 
 endf
 call SetupVAM()
@@ -125,7 +125,6 @@ set showmatch " show matching brackets
 " Remove search highlighting with <C-L>
 "CONFLICT WITH SWITCH BUFFER
 noremap <C-L><C-L> <Esc>:syntax sync fromstart<CR>:let @/=""<CR>
-inoremap <C-L><C-L> <C-o>:syntax sync fromstart<CR>:let @/=""<CR>
 nnoremap <C-L> :nohls<CR>
 " Clear the search term so (n and p no longer search again
 "map <C-L><C-L> :let @/=""<CR>
@@ -185,40 +184,41 @@ endfunc
 "Plugin settings {
 "Syntastic (And status line, taken from Steve Losh
 
-"let g:syntastic_python_checker = 'pyflakes' "This is a bit of a hack, this should be default? Syntastic will spaz out if you dont have pyflakes (which you should) on the PATH
+"let g:syntastic_python_checkers = [''] "This is a bit of a hack, this should be default? Syntastic will spaz out if you dont have pyflakes (which you should) on the PATH
 
-set statusline=%f    " Path.
-set statusline+=%m   " Modified flag.
-set statusline+=%r   " Readonly flag.
-set statusline+=%w   " Preview window flag.
-set statusline+=\ [%{getcwd()}]          " current dir
-set statusline+=%{fugitive#statusline()} "  Git Hotness
+"set statusline=%f    " Path.
+"set statusline+=%m   " Modified flag.
+"set statusline+=%r   " Readonly flag.
+"set statusline+=%w   " Preview window flag.
+"set statusline+=\ [%{getcwd()}]          " current dir
+"set statusline+=%{fugitive#statusline()} "  Git Hotness
 
-set statusline+=\    " Space.
+"set statusline+=\    " Space.
 
-set statusline+=%#redbar#                " Highlight the following as a warning.
-set statusline+=%{SyntasticStatuslineFlag()} " Syntastic errors.
-set statusline+=%*                           " Reset highlighting.
+"set statusline+=%#redbar#                " Highlight the following as a warning.
+"set statusline+=%{SyntasticStatuslineFlag()} " Syntastic errors.
+"set statusline+=%*                           " Reset highlighting.
 
-set statusline+=%=   " Right align.
+"set statusline+=%=   " Right align.
 
 
-" Line and column position and counts.
-set statusline+=\ (line\ %l\/%L,\ col\ %03c)
+"" Line and column position and counts.
+"set statusline+=\ (line\ %l\/%L,\ col\ %03c)
 
-set statusline+=%#warningmsg# "enable flags in status bar
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_enable_signs=1 "enable signs in side bar
-let g:syntastic_auto_loc_list=2
+"set statusline+=%#warningmsg# "enable flags in status bar
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"let g:syntastic_enable_signs=1 "enable signs in side bar
+"let g:syntastic_auto_loc_list=2
 
 "PYMODE
 "imap <C-A> <C-R>=RopeCodeAssistInsertMode()<CR>
-let g:pymode_lint = 1
 let g:pymode_rope = 1
 let g:pymode_folding = 0
+let g:pymode_lint = 1
 let g:pymode_lint_write = 1
-let g:pymode_lint_checker = "pep8"
+let g:pymode_lint_signs = 1
+let g:pymode_lint_checker = "pylint"
 let g:pymode_lint_ignore="E225,E501"
 
 "Jedi
@@ -281,10 +281,7 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "vim-addons/snippets/snippets"]
-
-"Pydoc
-" Type <leader>pw to list the python docs of the word under the cursor or 
-" :Pydoc NAME to find docs on NAME
+let g:ultisnips_python_style="sphinx"
 
 "vim-ipython
 "Run python console, python qtconsole or python kernel in terminal
@@ -426,6 +423,14 @@ nnoremap <Space> za
 vnoremap <Space> za
 
 " Fix tmux's mappings for arrow keys
+"noremap OA <up>
+"noremap OB <down>
+"noremap OC <right>
+"noremap OD <left>
+"set t_ku=OA
+"set t_kd=OB
+"set t_kr=OC
+"set t_kl=OD
 noremap OA <up>
 noremap OB <down>
 noremap OC <right>
@@ -469,7 +474,7 @@ nnoremap ' `
 nnoremap ` '
 
 " ROT13 - fun
-noremap <leader>r ggVGg?
+"noremap <leader>r ggVGg?
 " }
 "
 

@@ -8,7 +8,7 @@
 
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files="ipython pymodoro xmobarrc xmonad xsession xinitrc xmodmap dircolors vimrc vim eclim zshrc oh-my-zsh tmux.conf"    # list of files/folders to symlink in homedir
+files="ipython pymodoro xmobarrc xmonad xsession xinitrc xmodmap dircolors vimrc vim eclim zshrc oh-my-zsh tmux.conf pylintrc"    # list of files/folders to symlink in homedir
 
 ##########
 

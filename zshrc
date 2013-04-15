@@ -4,7 +4,7 @@ alias ipythons='ipython --profile=science'
 alias cdblog='cd ~/Work/Code/Websites/RailsBlog/'
 alias bx='bundle exec'
 alias start-eclimd='/Applications/eclipse/eclimd'
-alias grep='grep --color=auto#'
+alias grep='grep --color=auto'
 #Alias for zsh plugin which does safe deletion
 alias rm=trash
 
