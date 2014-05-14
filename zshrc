@@ -44,7 +44,7 @@ export DYLD_LIBRARY_PATH=/bin:/Applications/weka-3-6-3/:/Applications/weka-3-6-3
 export CLASSPATH=.:/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Classes/classes.jar:/Users/alansaul/Documents/workspace/Jogl/lib/gluegen-rt.jar:/Users/alansaul/Documents/workspace/Jogl/lib/jogl.jar:/Applications/weka-3-6-3/weka.jar
 
 #For NPM modules
-export NODE_PATH='/usr/local/lib/node_modules'
+export NODE_PATH='/usr/local/lib/node_modules:/home/alansaul/node_modules'
 
 #Default path
 PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
@@ -107,7 +107,7 @@ fi
 # MacPorts Installer addition on 2010-11-29_at_00:59:36: adding an appropriate PATH variable for use with MacPorts.
 # Customize to your needs...
 #
-export PATH=/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:/Users/alansaul/.rvm/gems/ruby-1.9.2-p180/bin:/Users/alansaul/.rvm/gems/ruby-1.9.2-p180@global/bin:/Users/alansaul/.rvm/rubies/ruby-1.9.2-p180/bin:/Users/alansaul/.rvm/bin:/usr/local/share/npm/bin:/opt/node/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/sw/bin:/sw/sbin:/usr/local/bin:/usr/texbin:/usr/X11/bin:/usr/X11R6/bin:/Users/alansaul/Documents/MATLAB/Dissertation_Code_WC:/Users/alansaul/sandbox:/usr/src/play-1.2:/Applications/Autodesk/maya2011/Maya.app/Contents/bin/:/Users/alansaul/Work/Code/OpenCV/trunk:/Users/alansaul/.gem/ruby/1.8/bin:/usr/bin:/bin:/usr/sbin:/sbin:.
+export PATH=/opt/local/lib/postgresql93/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:/Users/alansaul/.rvm/gems/ruby-1.9.2-p180/bin:/Users/alansaul/.rvm/gems/ruby-1.9.2-p180@global/bin:/Users/alansaul/.rvm/rubies/ruby-1.9.2-p180/bin:/Users/alansaul/.rvm/bin:/usr/local/share/npm/bin:/opt/node/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/sw/bin:/sw/sbin:/usr/local/bin:/usr/texbin:/usr/X11/bin:/usr/X11R6/bin:/Users/alansaul/Documents/MATLAB/Dissertation_Code_WC:/Users/alansaul/sandbox:/usr/src/play-1.2:/Applications/Autodesk/maya2011/Maya.app/Contents/bin/:/Users/alansaul/Work/Code/OpenCV/trunk:/Users/alansaul/.gem/ruby/1.8/bin:/usr/bin:/bin:/usr/sbin:/sbin:.
 
 source $ZSH/oh-my-zsh.sh
 
