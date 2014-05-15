@@ -74,6 +74,7 @@ ZSH=$HOME/dotfiles/oh-my-zsh
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 #export ZSH_THEME="blinks-dark-bg"
+export ZSH_CUSTOM="$HOME/dotfiles/zsh_custom"
 export ZSH_THEME="blinks-solarized"
 #export ZSH_THEME="robbyrussell"
 
@@ -116,7 +117,7 @@ fi
 # MacPorts Installer addition on 2010-11-29_at_00:59:36: adding an appropriate PATH variable for use with MacPorts.
 # Customize to your needs...
 #
-export PATH=$WORKON_HOME:~/dotfiles:/home/alans/Other_Applications/bin:/opt/intel/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/usr/local/bin:/usr/texbin:/usr/X11/bin:/usr/X11R6/bin:/usr/bin:/bin:/usr/sbin:/sbin:.
+#export PATH=$WORKON_HOME:~/dotfiles:/home/alans/Other_Applications/bin:/opt/intel/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/usr/local/bin:/usr/texbin:/usr/X11/bin:/usr/X11R6/bin:/usr/bin:/bin:/usr/sbin:/sbin:.
 
 export PATH=/opt/local/lib/postgresql93/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:/Users/alansaul/.rvm/gems/ruby-1.9.2-p180/bin:/Users/alansaul/.rvm/gems/ruby-1.9.2-p180@global/bin:/Users/alansaul/.rvm/rubies/ruby-1.9.2-p180/bin:/Users/alansaul/.rvm/bin:/usr/local/share/npm/bin:/opt/node/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/sw/bin:/sw/sbin:/usr/local/bin:/usr/texbin:/usr/X11/bin:/usr/X11R6/bin:/Users/alansaul/Documents/MATLAB/Dissertation_Code_WC:/Users/alansaul/sandbox:/usr/src/play-1.2:/Applications/Autodesk/maya2011/Maya.app/Contents/bin/:/Users/alansaul/Work/Code/OpenCV/trunk:/Users/alansaul/.gem/ruby/1.8/bin:/usr/bin:/bin:/usr/sbin:/sbin:.
 
