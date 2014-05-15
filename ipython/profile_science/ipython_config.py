@@ -32,13 +32,13 @@ c = get_config()
 
 # Pre-load matplotlib and numpy for interactive use, selecting a particular
 # matplotlib backend and loop integration.
-c.InteractiveShellApp.pylab = None
+#c.InteractiveShellApp.pylab = None
 
 # If true, an 'import *' is done from numpy and pylab, when using pylab
 # c.InteractiveShellApp.pylab_import_all = True
 
 # A list of dotted module names of IPython extensions to load.
-# c.InteractiveShellApp.extensions = []
+c.InteractiveShellApp.extensions = ['autoreload', 'line_profiler_ext', 'memory_profiler_ext']
 
 # Run the module as a script.
 # c.InteractiveShellApp.module_to_run = ''
@@ -74,9 +74,15 @@ c.InteractiveShellApp.pylab = None
 # lines of code to run at IPython startup.
 c.TerminalIPythonApp.exec_lines = ['%load_ext autoreload',
                                    '%autoreload 2',
+                                   '%aimport -numpy',
+                                   '%aimport -scipy',
+                                   '%aimport -matplotlib',
                                    'import numpy as np',
                                    'import scipy as sp',
-                                   'import matplotlib.pyplot as plt']
+                                   'import matplotlib',
+                                   'matplotlib.use("Qt4Agg")',
+                                   'import matplotlib.pyplot as plt'
+                                   ]
 
 # Enable GUI event loop integration ('qt', 'wx', 'gtk', 'glut', 'pyglet',
 # 'osx').
@@ -118,7 +124,7 @@ c.TerminalIPythonApp.exec_lines = ['%load_ext autoreload',
 # c.TerminalIPythonApp.quick = False
 
 # A list of dotted module names of IPython extensions to load.
-# c.TerminalIPythonApp.extensions = []
+c.TerminalIPythonApp.extensions = ['autoreload', 'line_profiler_ext', 'memory_profiler_ext']
 
 # The Logging format template
 # c.TerminalIPythonApp.log_format = '[%(name)s] %(message)s'

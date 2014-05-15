@@ -19,7 +19,8 @@ fun! SetupVAM()
     "let g:vim_addon_manager['plugin_sources']['tma-multiple-cursors'] = { 'type' : 'git', 'url': 'git://github.com/terryma/vim-multiple-cursors.git' }
 
     "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
-    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'UltiSnips', 'snippets', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX', 'Python-mode-klen', 'fugitive', 'jedi-vim'], {'auto_install': 1})
+    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'TaskList', 'UltiSnips', 'snippets', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX', 'fugitive', 'jedi-vim', 'Supertab', 'Python-mode-klen'], {'auto_install': 1})
+"'Python-mode-klen'
 
 endf
 call SetupVAM()
@@ -211,18 +212,24 @@ endfunc
 "let g:syntastic_enable_signs=1 "enable signs in side bar
 "let g:syntastic_auto_loc_list=2
 
+"Supertab
+let g:SuperTabDefaultCompletionType = "context"
+
 "PYMODE
 "imap <C-A> <C-R>=RopeCodeAssistInsertMode()<CR>
-let g:pymode_rope = 1
+let g:pymode_rope = 0
 let g:pymode_folding = 0
 let g:pymode_lint = 1
 let g:pymode_lint_write = 1
 let g:pymode_lint_signs = 1
 let g:pymode_lint_checker = "pylint"
-let g:pymode_lint_ignore="E225,E501"
+let g:pymode_lint_ignore="E225,E501,C0301"
+let g:pymode_run_key = '<leader>p' " Key for run python code
+let g:pymode_breakpoint_cmd = "import ipdb; ipdb.set_trace()  # XXX BREAKPOINT"
 
+"
 "Jedi
-let g:jedi#autocompletion_command = "<C-A>"
+let g:jedi#completions_command = "<C-A>"
 let g:jedi#use_tabs_not_buffers = 0
 let g:jedi#popup_on_dot = 0
 
@@ -245,10 +252,6 @@ let Tlist_WinWidth = 40 " 40 cols wide, so i can (almost always read my
 "PROJECT
 " Add recently accessed projects menu (project plugin)
 set viminfo^=!
-
-"RAILS
-" Change which file opens after executing :Rails command
-let g:rails_default_file='config/database.yml'
 
 "NERDTREE
 " Setup nerd tree shortcut to see directory listings
@@ -313,6 +316,7 @@ let g:Tex_CompileRule_ps = 'dvips -Pwww -o $*.ps $*.dvi'
 let g:Tex_CompileRule_pspdf = 'ps2pdf $*.ps'
 let g:Tex_CompileRule_dvipdf = 'dvipdfm $*.dvi'
 let g:Tex_CompileRule_pdf = 'pdflatex -synctex=1 --interaction=nonstopmode $*'
+nnoremap <leader>r :w<CR>:!rubber --pdf --warn all %<CR>
  
 let g:Tex_FormatDependency_ps  = 'dvi,ps'
 let g:Tex_FormatDependency_pspdf = 'dvi,ps,pspdf'
@@ -320,7 +324,10 @@ let g:Tex_FormatDependency_dvipdf = 'dvi,dvipdf'
 
 autocmd BufNewFile,BufRead *.tex set spell
 
-noremap <leader>lc :silent call Tex_RunLaTeX()<CR>
+nnoremap <leader>kk :silent call Tex_RunLaTeX()<CR>
+set shortmess+=A "Don't show warning about swap files!
+let g:Tex_ShowErrorContext = 0 "Dont show log file
+let g:Tex_GotoError = 0 "Dont jump to quickfix window showing errors
 
 "au BufWritePost *.tex silent call Tex_RunLaTeX()
 "au BufWritePost *.tex silent !pkill -USR1 xdvi.bin
