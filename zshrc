@@ -51,9 +51,17 @@ export MATLAB_JAVA=/usr/lib/jvm/default-java/jre
 #_JAVA_AWT_WM_NONREPARENTING=1; export _JAVA_AWT_WM_NONREPARENTING
 
 #For NPM modules
-export NODE_PATH='/usr/local/lib/node_modules'
+export NODE_PATH='/usr/local/lib/node_modules:/home/alansaul/node_modules'
 
 export PYTHONPATH=/Library/Python/2.6/site-packages:/home/alans/Work/GPy:/Users/alansaul/Work/CompSci/PhD:/home/alans/Work:/home/alans/Work:/opt/graphite/webapp:/opt/graphite/whisper:"${PYTHONPATH}"
+
+#Default path
+PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
+
+#Setup RVM (ruby version manager)
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
+
+export PYTHONPATH=/opt/local/livrary/framworks/python.framework/versions/2.7/bin:/opt/local/livrary/framworks/python.framework/versions/2.7/site-packages:/Library/Python/2.6/site-packages:/home/alans/Work/GPy:/Users/alansaul/Work/CompSci/PhD:/home/alans/Work:/home/alans/Work:/opt/graphite/webapp:/opt/graphite/whisper:/Users/alansaul/Work/CompSci/Darwin/Code/darwinproject2011/DarwinTools:/Users/alansaul/Work/CompSci/Darwin/Code:/Users/alansaul/Work/Code/OpenCV/trunk:"${PYTHONPATH}"
 
 #Force python to 32 bit
 export VERSIONER_PYTHON_PREFER_32_BIT=yes
@@ -109,5 +117,7 @@ fi
 # Customize to your needs...
 #
 export PATH=$WORKON_HOME:~/dotfiles:/home/alans/Other_Applications/bin:/opt/intel/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/usr/local/bin:/usr/texbin:/usr/X11/bin:/usr/X11R6/bin:/usr/bin:/bin:/usr/sbin:/sbin:.
+
+export PATH=/opt/local/lib/postgresql93/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:/Users/alansaul/.rvm/gems/ruby-1.9.2-p180/bin:/Users/alansaul/.rvm/gems/ruby-1.9.2-p180@global/bin:/Users/alansaul/.rvm/rubies/ruby-1.9.2-p180/bin:/Users/alansaul/.rvm/bin:/usr/local/share/npm/bin:/opt/node/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/sw/bin:/sw/sbin:/usr/local/bin:/usr/texbin:/usr/X11/bin:/usr/X11R6/bin:/Users/alansaul/Documents/MATLAB/Dissertation_Code_WC:/Users/alansaul/sandbox:/usr/src/play-1.2:/Applications/Autodesk/maya2011/Maya.app/Contents/bin/:/Users/alansaul/Work/Code/OpenCV/trunk:/Users/alansaul/.gem/ruby/1.8/bin:/usr/bin:/bin:/usr/sbin:/sbin:.
 
 source $ZSH/oh-my-zsh.sh

@@ -19,8 +19,12 @@ fun! SetupVAM()
     "let g:vim_addon_manager['plugin_sources']['tma-multiple-cursors'] = { 'type' : 'git', 'url': 'git://github.com/terryma/vim-multiple-cursors.git' }
 
     "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
+<<<<<<< HEAD
     call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'TaskList', 'UltiSnips', 'snippets', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX', 'fugitive', 'jedi-vim', 'Supertab', 'Python-mode-klen'], {'auto_install': 1})
 "'Python-mode-klen'
+=======
+    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'project.tar.gz', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'rails', 'TaskList', 'UltiSnips', 'snippets', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX', 'Python-mode-klen', 'fugitive', 'jedi-vim', 'Syntastic'], {'auto_install': 1})
+>>>>>>> 0cc57235ede99f5b96a9aba84425fbb4352016c7
 
 endf
 call SetupVAM()
