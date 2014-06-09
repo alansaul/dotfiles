@@ -1,4 +1,4 @@
-#alias python='python -B'
+alias python='python -B'
 alias sshdcs='ssh acp12ads@stulogin.dcs.shef.ac.uk'
 alias ipythons='ipython --profile=science'
 alias cdblog='cd ~/Work/Code/Websites/RailsBlog/'
@@ -41,33 +41,26 @@ setopt hist_ignore_all_dups
 # Locks to first column, like after Ctrl-Cing a program http://jonisalonen.com/2012/your-bash-prompt-needs-this/
 #$PS1="\[\033[G\]$PS1"
 
-export WORKON_HOME=~/Envs
-source /usr/local/bin/virtualenvwrapper.sh
+export BIBINPUTS=~/Work/BibTeX:~/Work/BibTeX/bib
 
-export CLASSPATH=.:/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Classes/classes.jar:/Users/alansaul/Documents/workspace/Jogl/lib/gluegen-rt.jar:/Users/alansaul/Documents/workspace/Jogl/lib/jogl.jar:/Applications/weka-3-6-3/weka.jar
+export WORKON_HOME=~/Envs
 
 #export AWT_TOOLKIT=MToolkit
 export MATLAB_JAVA=/usr/lib/jvm/default-java/jre
 #_JAVA_AWT_WM_NONREPARENTING=1; export _JAVA_AWT_WM_NONREPARENTING
-
-#For NPM modules
-export NODE_PATH='/usr/local/lib/node_modules:/home/alansaul/node_modules'
 
 export PYTHONPATH=/Library/Python/2.6/site-packages:/home/alans/Work/GPy:/Users/alansaul/Work/CompSci/PhD:/home/alans/Work:/home/alans/Work:/opt/graphite/webapp:/opt/graphite/whisper:"${PYTHONPATH}"
 
 #Default path
 PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
 
-#Setup RVM (ruby version manager)
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
-
-export PYTHONPATH=/opt/local/livrary/framworks/python.framework/versions/2.7/bin:/opt/local/livrary/framworks/python.framework/versions/2.7/site-packages:/Library/Python/2.6/site-packages:/home/alans/Work/GPy:/Users/alansaul/Work/CompSci/PhD:/home/alans/Work:/home/alans/Work:/opt/graphite/webapp:/opt/graphite/whisper:/Users/alansaul/Work/CompSci/Darwin/Code/darwinproject2011/DarwinTools:/Users/alansaul/Work/CompSci/Darwin/Code:/Users/alansaul/Work/Code/OpenCV/trunk:"${PYTHONPATH}"
+export PYTHONPATH=/home/alans/Work/Code/GPy:/Users/alansaul/Work/CompSci/PhD:/home/alans/Work:/opt/graphite/webapp:/opt/graphite/whisper:"${PYTHONPATH}"
 
 #Force python to 32 bit
 export VERSIONER_PYTHON_PREFER_32_BIT=yes
 
 # Path to your oh-my-zsh configuration.
-ZSH=$HOME/dotfiles/oh-my-zsh
+ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -80,7 +73,7 @@ export ZSH_THEME="blinks-solarized"
 
 # For gnome set the ls colors to something proper may need changing for osx to check for the file
 # Color listing
-if [[ -e ~/.dircolors ]]; then
+if type dircolors > /dev/null; then
     eval $(dircolors ~/.dircolors)
     zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 fi
@@ -102,7 +95,7 @@ fi
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git ruby macports gem github osx vi-mode python autojump colored-man extract)
+plugins=(git github osx vi-mode python autojump colored-man extract)
 #autojumo you press j Darwin and it will jump to the most likely directory
 #extract something.tar.gz will extract pretty much any compression type
 #pyclean deletes all .pyc files and pyfind finds all .py files
@@ -114,11 +107,7 @@ if [ -f /opt/local/etc/profile.d/autojump.sh ]; then
     . /opt/local/etc/profile.d/autojump.sh
 fi
 
-# MacPorts Installer addition on 2010-11-29_at_00:59:36: adding an appropriate PATH variable for use with MacPorts.
-# Customize to your needs...
-#
-#export PATH=$WORKON_HOME:~/dotfiles:/home/alans/Other_Applications/bin:/opt/intel/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/usr/local/bin:/usr/texbin:/usr/X11/bin:/usr/X11R6/bin:/usr/bin:/bin:/usr/sbin:/sbin:.
+export PATH=/usr/local/bin:/opt/local/lib/postgresql93/bin:/usr/local/sbin:/usr/local/mysql/bin:/Users/alansaul/sandbox:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin:.
 
-export PATH=/opt/local/lib/postgresql93/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:/Users/alansaul/.rvm/gems/ruby-1.9.2-p180/bin:/Users/alansaul/.rvm/gems/ruby-1.9.2-p180@global/bin:/Users/alansaul/.rvm/rubies/ruby-1.9.2-p180/bin:/Users/alansaul/.rvm/bin:/usr/local/share/npm/bin:/opt/node/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/sw/bin:/sw/sbin:/usr/local/bin:/usr/texbin:/usr/X11/bin:/usr/X11R6/bin:/Users/alansaul/Documents/MATLAB/Dissertation_Code_WC:/Users/alansaul/sandbox:/usr/src/play-1.2:/Applications/Autodesk/maya2011/Maya.app/Contents/bin/:/Users/alansaul/Work/Code/OpenCV/trunk:/Users/alansaul/.gem/ruby/1.8/bin:/usr/bin:/bin:/usr/sbin:/sbin:.
-
+source /usr/local/bin/virtualenvwrapper.sh
 source $ZSH/oh-my-zsh.sh

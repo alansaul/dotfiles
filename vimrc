@@ -19,7 +19,8 @@ fun! SetupVAM()
     "let g:vim_addon_manager['plugin_sources']['tma-multiple-cursors'] = { 'type' : 'git', 'url': 'git://github.com/terryma/vim-multiple-cursors.git' }
 
     "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
-    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'AutoTag', 'The_NERD_tree', 'Tagbar', 'endwise', 'surround', 'TaskList', 'UltiSnips', 'snippets', 'vim-ipython', 'YankRing', 'The_NERD_Commenter', 'LaTeX-Suite_aka_Vim-LaTeX', 'Python-mode-klen', 'fugitive', 'jedi-vim', 'Syntastic'], {'auto_install': 1})
+    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'AutoTag', 'The_NERD_tree', 'endwise', 'surround', 'UltiSnips', 'snippets', 'YankRing', 'The_NERD_Commenter', 'Python-mode-klen', 'fugitive', 'jedi-vim', 'Syntastic', 'AutomaticLaTexPlugin', 'powerline', 'Supertab'], {'auto_install': 1})
+    "'LaTeX-Suite_aka_Vim-LaTeX', 
 
 endf
 call SetupVAM()
@@ -133,6 +134,10 @@ set incsearch " BUT do highlight as you type you search phrase
 set ignorecase "Ignore case normally
 set smartcase "But if it has a capital in it, then pay attention to case
 
+" Mappings {
+"Set up map leader
+let mapleader = ';'
+
 " Keep search matches in the middle of the window and pulse the line when
 " moving to them.
 nnoremap n nzzzv
@@ -210,6 +215,7 @@ endfunc
 "set statusline+=%*
 "let g:syntastic_enable_signs=1 "enable signs in side bar
 "let g:syntastic_auto_loc_list=2
+set laststatus=2
 
 "Supertab
 let g:SuperTabDefaultCompletionType = "context"
@@ -234,27 +240,27 @@ let g:jedi#popup_on_dot = 0
 
 "TASK LIST
 " Toggle task list (type \td to see a list of TODO:'s etc"
-noremap <leader>td <Plug>TaskList
+"noremap <leader>td <Plug>TaskList
 
 " TagList Settings {
-let Tlist_Auto_Open=0 " let the tag list open automagically
-let Tlist_Compact_Format = 1 " show small menu
-let Tlist_Ctags_Cmd = 'ctags' " location of ctags
-let Tlist_Enable_Fold_Column = 0 " do show folding tree
-let Tlist_Exist_OnlyWindow = 1 " if you are the last, kill yourself
-let Tlist_File_Fold_Auto_Close = 0 " fold closed other trees
-let Tlist_Sort_Type = "name" " order by 
-let Tlist_Use_Right_Window = 1 " split to the right side of the screen
-let Tlist_WinWidth = 40 " 40 cols wide, so i can (almost always read my
+"let Tlist_Auto_Open=0 " let the tag list open automagically
+"let Tlist_Compact_Format = 1 " show small menu
+"let Tlist_Ctags_Cmd = 'ctags' " location of ctags
+"let Tlist_Enable_Fold_Column = 0 " do show folding tree
+"let Tlist_Exist_OnlyWindow = 1 " if you are the last, kill yourself
+"let Tlist_File_Fold_Auto_Close = 0 " fold closed other trees
+"let Tlist_Sort_Type = "name" " order by 
+"let Tlist_Use_Right_Window = 1 " split to the right side of the screen
+"let Tlist_WinWidth = 40 " 40 cols wide, so i can (almost always read my
 "   functions)
 
 "PROJECT
 " Add recently accessed projects menu (project plugin)
-set viminfo^=!
+"set viminfo^=!
 
 "NERDTREE
 " Setup nerd tree shortcut to see directory listings
-noremap <Leader>n :NERDTreeToggle<CR>  
+noremap <leader>n :NERDTreeToggle<CR>  
 
 "CtrlP
 let g:ctrlp_map = '<leader>f'
@@ -263,10 +269,10 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc     " Linux/MacOSX
 
 "EXUBERANT TAGS
 " Remake ctags with F5
-noremap <silent> <F6> :!ctags -R --exclude=.svn --exclude=.git --exclude=log .<CR>
-noremap <F7> :!ctags -R --exclude=.svn --exclude=.git --exclude=log .<CR>
+"noremap <silent> <F6> :!ctags -R --exclude=.svn --exclude=.git --exclude=log .<CR>
+"noremap <F7> :!ctags -R --exclude=.svn --exclude=.git --exclude=log .<CR>
 "Set up tag toggle mapping
-nnoremap <leader>t :TagbarToggle<CR>
+"nnoremap <leader>t :TagbarToggle<CR>
 "Tell it where to find tags
 "autocmd BufWritePost *
       "\ if filereadable('tags') |
@@ -294,6 +300,19 @@ let g:ultisnips_python_style="sphinx"
 "<leader>d to get docs for function name under word (import needs to have been
 "ipython loaded)
 
+" vim-Latex alternative things
+" LaTeX (rubber) macro for compiling
+"nnoremap <leader>ll :w<CR>:!rubber --pdf --warn all %<CR>
+
+" View PDF macro; '%:r' is current file's root (base) name.
+"nnoremap <leader>v :!mupdf %:r.pdf &<CR><CR>
+
+let g:atp_Compiler = "bash"
+let b:atp_TexCompiler   = "pdflatex"
+let g:atp_ProgressBar=1
+nnoremap <leader>L :Tex<CR>
+let g:conceallevel=2
+
 "vim-latex
 " Set colorscheme, enable conceal (except for
 " subscripts/superscripts), and match conceal
@@ -303,30 +322,30 @@ let g:ultisnips_python_style="sphinx"
 "hi Conceal cterm=NONE ctermbg=NONE ctermfg=white
 "au VimEnter * hi Conceal cterm=NONE ctermbg=NONE ctermfg=white
 "au VimEnter * set conceallevel=2
-au ColorScheme * hi! link Conceal Normal
-set cole=2
-let g:tex_conceal="asgm"
+"au ColorScheme * hi! link Conceal Normal
+"set cole=2
+"let g:tex_conceal="asgm"
 
-let g:tex_flavor = "latex"
-let g:Tex_DefaultTargetFormat = 'pdf'
+"let g:tex_flavor = "latex"
+"let g:Tex_DefaultTargetFormat = 'pdf'
  
-let g:Tex_CompileRule_dvi = 'latex --interaction=nonstopmode $*'
-let g:Tex_CompileRule_ps = 'dvips -Pwww -o $*.ps $*.dvi'
-let g:Tex_CompileRule_pspdf = 'ps2pdf $*.ps'
-let g:Tex_CompileRule_dvipdf = 'dvipdfm $*.dvi'
-let g:Tex_CompileRule_pdf = 'pdflatex -synctex=1 --interaction=nonstopmode $*'
-nnoremap <leader>r :w<CR>:!rubber --pdf --warn all %<CR>
+"let g:Tex_CompileRule_dvi = 'latex --interaction=nonstopmode $*'
+"let g:Tex_CompileRule_ps = 'dvips -Pwww -o $*.ps $*.dvi'
+"let g:Tex_CompileRule_pspdf = 'ps2pdf $*.ps'
+"let g:Tex_CompileRule_dvipdf = 'dvipdfm $*.dvi'
+"let g:Tex_CompileRule_pdf = 'pdflatex -synctex=1 --interaction=nonstopmode $*'
+"nnoremap <leader>r :w<CR>:!rubber --pdf --warn all %<CR>
  
-let g:Tex_FormatDependency_ps  = 'dvi,ps'
-let g:Tex_FormatDependency_pspdf = 'dvi,ps,pspdf'
-let g:Tex_FormatDependency_dvipdf = 'dvi,dvipdf'
+"let g:Tex_FormatDependency_ps  = 'dvi,ps'
+"let g:Tex_FormatDependency_pspdf = 'dvi,ps,pspdf'
+"let g:Tex_FormatDependency_dvipdf = 'dvi,dvipdf'
 
-autocmd BufNewFile,BufRead *.tex set spell
+"autocmd BufNewFile,BufRead *.tex set spell
 
-nnoremap <leader>kk :silent call Tex_RunLaTeX()<CR>
-set shortmess+=A "Don't show warning about swap files!
-let g:Tex_ShowErrorContext = 0 "Dont show log file
-let g:Tex_GotoError = 0 "Dont jump to quickfix window showing errors
+"nnoremap <leader>kk :silent call Tex_RunLaTeX()<CR>
+"set shortmess+=A "Don't show warning about swap files!
+"let g:Tex_ShowErrorContext = 0 "Dont show log file
+"let g:Tex_GotoError = 0 "Dont jump to quickfix window showing errors
 
 "au BufWritePost *.tex silent call Tex_RunLaTeX()
 "au BufWritePost *.tex silent !pkill -USR1 xdvi.bin
@@ -376,9 +395,6 @@ au InsertLeave * if pumvisible() == 0|pclose|endif
 " }
 " }
 
-" Mappings {
-"Set up map leader
-let mapleader = ';'
 
 " Fix D and Y
 nnoremap D d$
