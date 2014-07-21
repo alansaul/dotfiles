@@ -21,3 +21,7 @@ fi
 #exec awesome
 
 #exec xmonad
+#
+#set up screens
+xrandr --output DVI-I-1 --mode 1920x1080 --left-of DP-1
+xrandr --output DP-1 --rotate left --mode 1920x1080
