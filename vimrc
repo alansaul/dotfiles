@@ -228,7 +228,7 @@ let g:pymode_lint = 1
 let g:pymode_lint_write = 1
 let g:pymode_lint_signs = 1
 let g:pymode_lint_checker = "pylint"
-let g:pymode_lint_ignore="E225,E501,C0301"
+let g:pymode_lint_ignore="E231,E225,E501,C0301"
 let g:pymode_run_key = '<leader>p' " Key for run python code
 let g:pymode_breakpoint_cmd = "import ipdb; ipdb.set_trace()  # XXX BREAKPOINT"
 
@@ -308,10 +308,14 @@ let g:ultisnips_python_style="sphinx"
 "nnoremap <leader>v :!mupdf %:r.pdf &<CR><CR>
 
 let g:atp_Compiler = "bash"
-let b:atp_TexCompiler   = "pdflatex"
+let b:atp_TexCompiler = "pdflatex"
+let b:atp_Viewer = "evince"
 let g:atp_ProgressBar=1
 nnoremap <leader>L :Tex<CR>
 let g:conceallevel=2
+let g:atp_imap_leader_2="##"
+let g:atp_imap_leader_3="]"
+let g:atp_imap_leader_1="#"
 
 "vim-latex
 " Set colorscheme, enable conceal (except for

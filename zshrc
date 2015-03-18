@@ -1,8 +1,7 @@
-alias python='python -B'
+#alias python='python -B'
+#cworkon(){source ~/CanopyEnvs/$1/bin/activate;} # Alias for workon with canopy environment instead
 alias sshdcs='ssh acp12ads@stulogin.dcs.shef.ac.uk'
 alias ipythons='ipython --profile=science'
-alias cdblog='cd ~/Work/Code/Websites/RailsBlog/'
-alias bx='bundle exec'
 alias start-eclimd='/Applications/eclipse/eclimd'
 alias grep='grep --color=auto'
 alias rmpyc="find . -name '*.pyc' -delete"
@@ -28,11 +27,11 @@ case "$OSTYPE" in
       ;;
 esac
 
-function detexcomment { cat "$1" | sed '/\\begin{comment}/,/\\end{comment}/d' | detex | wc; }
+#function detexcomment { cat "$1" | sed '/\\begin{comment}/,/\\end{comment}/d' | detex | wc; }
 
 # Bacward search in the shell history with <C-r>
 export EDITOR="vim"
-set editing-mode vi
+#set editing-mode vi
 bindkey -v 
 bindkey '\e[3~' delete-char
 bindkey '^R' history-incremental-search-backward
@@ -49,12 +48,10 @@ export WORKON_HOME=~/Envs
 export MATLAB_JAVA=/usr/lib/jvm/default-java/jre
 #_JAVA_AWT_WM_NONREPARENTING=1; export _JAVA_AWT_WM_NONREPARENTING
 
-export PYTHONPATH=/Library/Python/2.6/site-packages:/home/alans/Work/GPy:/Users/alansaul/Work/CompSci/PhD:/home/alans/Work:/home/alans/Work:/opt/graphite/webapp:/opt/graphite/whisper:"${PYTHONPATH}"
+export PYTHONPATH=/home/alans/Work/conference:/home/alans/Work/ods:/opt/graphite/webapp:/opt/graphite/whisper:"${PYTHONPATH}"
 
 #Default path
 PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
-
-export PYTHONPATH=/home/alans/Work/Code/GPy:/Users/alansaul/Work/CompSci/PhD:/home/alans/Work:/opt/graphite/webapp:/opt/graphite/whisper:"${PYTHONPATH}"
 
 #Force python to 32 bit
 export VERSIONER_PYTHON_PREFER_32_BIT=yes
@@ -109,5 +106,13 @@ fi
 
 export PATH=/usr/local/bin:/opt/local/lib/postgresql93/bin:/usr/local/sbin:/usr/local/mysql/bin:/Users/alansaul/sandbox:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin:.
 
-source /usr/local/bin/virtualenvwrapper.sh
+# added by Anaconda 2.0.1 installer
+export PATH="/home/alans/anaconda/bin:$PATH"
+
+#source /usr/local/bin/virtualenvwrapper.sh
 source $ZSH/oh-my-zsh.sh
+
+# Added by Canopy installer on 2014-07-30
+# VIRTUAL_ENV_DISABLE_PROMPT can be set to '' to make bashprompt show that Canopy is active, otherwise 1
+#VIRTUAL_ENV_DISABLE_PROMPT=1 source /home/alans/Enthought/Canopy_64bit/User/bin/activate
+
