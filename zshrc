@@ -48,7 +48,7 @@ export WORKON_HOME=~/Envs
 export MATLAB_JAVA=/usr/lib/jvm/default-java/jre
 #_JAVA_AWT_WM_NONREPARENTING=1; export _JAVA_AWT_WM_NONREPARENTING
 
-export PYTHONPATH=/home/alans/Work/conference:/home/alans/Work/ods:/opt/graphite/webapp:/opt/graphite/whisper:"${PYTHONPATH}"
+export PYTHONPATH=/home/alans/Work/het_nongauss:/home/alans/Work/colvb:/home/alans/Work/het_nongauss:/home/alans/Work/conference:/home/alans/Work/ods:/opt/graphite/webapp:/opt/graphite/whisper:"${PYTHONPATH}"
 
 #Default path
 PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
@@ -104,7 +104,7 @@ if [ -f /opt/local/etc/profile.d/autojump.sh ]; then
     . /opt/local/etc/profile.d/autojump.sh
 fi
 
-export PATH=/usr/local/bin:/opt/local/lib/postgresql93/bin:/usr/local/sbin:/usr/local/mysql/bin:/Users/alansaul/sandbox:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin:.
+export PATH=/home/alans/matlab/bin:/usr/local/bin:/opt/local/lib/postgresql93/bin:/usr/local/sbin:/usr/local/mysql/bin:/Users/alansaul/sandbox:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin:.
 
 # added by Anaconda 2.0.1 installer
 export PATH="/home/alans/anaconda/bin:$PATH"
@@ -116,3 +116,6 @@ source $ZSH/oh-my-zsh.sh
 # VIRTUAL_ENV_DISABLE_PROMPT can be set to '' to make bashprompt show that Canopy is active, otherwise 1
 #VIRTUAL_ENV_DISABLE_PROMPT=1 source /home/alans/Enthought/Canopy_64bit/User/bin/activate
 
+export TEXINPUTS=:$HOME/Work/publications/tex_inputs//
+export BSTINPUTS=:$HOME/Work/publications/tex_inputs//
+export BIBINPUTS=:$HOME/Work/publications/bib//

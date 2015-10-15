@@ -19,7 +19,8 @@ fun! SetupVAM()
     "let g:vim_addon_manager['plugin_sources']['tma-multiple-cursors'] = { 'type' : 'git', 'url': 'git://github.com/terryma/vim-multiple-cursors.git' }
 
     "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
-    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'AutoTag', 'The_NERD_tree', 'endwise', 'surround', 'UltiSnips', 'snippets', 'YankRing', 'The_NERD_Commenter', 'Python-mode-klen', 'fugitive', 'jedi-vim', 'Syntastic', 'AutomaticLaTeXPlugin', 'powerline', 'Supertab'], {'auto_install': 1})
+    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'AutoTag', 'endwise', 'surround', 'UltiSnips', 'snippets', 'YankRing', 'The_NERD_Commenter', 'Python-mode-klen', 'fugitive', 'jedi-vim', 'Syntastic',  'powerline', 'Supertab'], {'auto_install': 1})
+    "'AutomaticLaTeXPlugin',
     "'LaTeX-Suite_aka_Vim-LaTeX', 
 
 endf
@@ -169,22 +170,21 @@ augroup END
 "Set up relative line numbering instead of absolute as its useful to perform
 "actions to multiple lines
 "Make <C-N><C-N> toggle between line numberings relative absolute and none
-noremap <silent> <C-N><C-N> :call ToggleNumbers()<CR>
 func! ToggleNumbers()
     "nu -> nonu -> rnu
-    if exists('&rnu')
-        if &rnu == 1
-            set nu
-        elseif &nu == 1
-            set nonu
+    if exists('&relativenumber')
+        if (&relativenumber == 1)
+            set number
+        elseif (&number == 1)
+            set nonumber
         else
-            set rnu
+            set relativenumber
         endif
     else
         setl nu!
     endif
-
 endfunc
+noremap <silent> <C-N><C-N> :call ToggleNumbers()<CR>
 
 "Plugin settings {
 "Syntastic (And status line, taken from Steve Losh
