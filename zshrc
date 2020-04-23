@@ -1,8 +1,6 @@
 #alias python='python -B'
 #cworkon(){source ~/CanopyEnvs/$1/bin/activate;} # Alias for workon with canopy environment instead
-alias sshdcs='ssh acp12ads@stulogin.dcs.shef.ac.uk'
 alias ipythons='ipython --profile=science'
-alias start-eclimd='/Applications/eclipse/eclimd'
 alias grep='grep --color=auto'
 alias rmpyc="find . -name '*.pyc' -delete"
 alias matlabt="matlab -nodesktop -nosplash"
@@ -27,6 +25,24 @@ case "$OSTYPE" in
       ;;
 esac
 
+notes() {
+    local fpath=$HOME/notes.md
+    if [ "$1" == "gvim" ]; then
+        gvim + $fpath
+    elif [ "$1" == "vim" ]; then
+        gvim + $fpath
+    elif [ "$1" == "date" ]; then
+        echo '' >> $fpath
+        echo '# '`date +"%m-%d-%Y-%T"` >> $fpath
+        echo '---------------------' >> $fpath
+    elif [ "$1" == "" ]; then
+        less +G $fpath
+    else
+        echo '' >> $fpath
+        echo $@ >> $fpath
+    fi
+}
+
 #function detexcomment { cat "$1" | sed '/\\begin{comment}/,/\\end{comment}/d' | detex | wc; }
 
 # Bacward search in the shell history with <C-r>
@@ -48,13 +64,13 @@ export WORKON_HOME=~/Envs
 export MATLAB_JAVA=/usr/lib/jvm/default-java/jre
 #_JAVA_AWT_WM_NONREPARENTING=1; export _JAVA_AWT_WM_NONREPARENTING
 
-export PYTHONPATH=/home/alans/Work/het_nongauss:/home/alans/Work/colvb:/home/alans/Work/het_nongauss:/home/alans/Work/conference:/home/alans/Work/ods:/opt/graphite/webapp:/opt/graphite/whisper:"${PYTHONPATH}"
+export PYTHONPATH="${PYTHONPATH}"
 
 #Default path
 PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
 
 #Force python to 32 bit
-export VERSIONER_PYTHON_PREFER_32_BIT=yes
+#export VERSIONER_PYTHON_PREFER_32_BIT=yes
 
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
@@ -64,8 +80,10 @@ ZSH=$HOME/.oh-my-zsh
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 #export ZSH_THEME="blinks-dark-bg"
-export ZSH_CUSTOM="$HOME/dotfiles/zsh_custom"
-export ZSH_THEME="blinks-solarized"
+#export ZSH_CUSTOM="$HOME/Work/Code/dotfiles/zsh_custom:$HOME/dotfiles/zsh_custom"
+#export ZSH_CUSTOM="$HOME/Work/Code/dotfiles/zsh_custom"
+#export ZSH_THEME="blinks-solarized"
+export ZSH_THEME="blinks"
 #export ZSH_THEME="robbyrussell"
 
 # For gnome set the ls colors to something proper may need changing for osx to check for the file
@@ -104,10 +122,21 @@ if [ -f /opt/local/etc/profile.d/autojump.sh ]; then
     . /opt/local/etc/profile.d/autojump.sh
 fi
 
-export PATH=/home/alans/matlab/bin:/usr/local/bin:/opt/local/lib/postgresql93/bin:/usr/local/sbin:/usr/local/mysql/bin:/Users/alansaul/sandbox:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin:.
+PATH="/home/alans/matlab/bin:/usr/local/bin:/opt/local/lib/postgresql93/bin:/usr/local/sbin:/usr/local/mysql/bin:/Users/alansaul/sandbox:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin:$PATH"
 
 # added by Anaconda 2.0.1 installer
-export PATH="/home/alans/anaconda/bin:$PATH"
+export PATH="/Users/alansaul/Work/Code/main/Platform_Generic/learning/learning_prototype:/Library/TeX/texbin:/Users/alansaul/Work/Code/AirConnect/bin:/usr/local/anaconda3/bin:/home/alans/anaconda/bin:~/Work/Code/eclipse-workspace/GarminSDKs/connectiq-sdk-mac-2.4.2:$PATH:"
+
+#export CXX=/usr/local/cellar/gcc/8.1.0/bin/g++-8
+# put your paths to clang-4.0 and clang++-4.0:
+export CC=/usr/local/opt/llvm/bin/clang
+export CXX=/usr/local/opt/llvm/bin/clang++
+export CXX11=/usr/local/opt/llvm/bin/clang++
+export CXX1X=/usr/local/opt/llvm/bin/clang++
+
+#And add runtime and headers
+#export LDFLAGS = -L/usr/local/opt/llvm/lib
+#export CPPFLAGS = -I/usr/local/opt/llvm/include
 
 #source /usr/local/bin/virtualenvwrapper.sh
 source $ZSH/oh-my-zsh.sh
@@ -119,3 +148,24 @@ source $ZSH/oh-my-zsh.sh
 export TEXINPUTS=:$HOME/Work/publications/tex_inputs//
 export BSTINPUTS=:$HOME/Work/publications/tex_inputs//
 export BIBINPUTS=:$HOME/Work/publications/bib//
+
+__conda_setup="$(CONDA_REPORT_ERRORS=false '/Users/alansaul/miniconda3/bin/conda' shell.bash hook 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    \eval "$__conda_setup"
+else
+    if [ -f "/Users/alansaul/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/alansaul/miniconda3/etc/profile.d/conda.sh"
+        CONDA_CHANGEPS1=false conda activate base
+    else
+        \export PATH="/Users/alansaul/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+
+export SLUGIFY_USES_TEXT_UNIDECODE=yes
+export PROWLER_IO_HOME=/Users/alansaul/prowler_home
+
+# Fuzzy finding
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export PATH="/usr/local/opt/llvm/bin:$PATH"
+export PATH="/usr/local/opt/llvm/bin:$PATH"
