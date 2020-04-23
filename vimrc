@@ -3,29 +3,79 @@ set nocompatible
 filetype indent plugin on | syn on
 set hidden
 
-" let's copy paste some lines from documentation
-fun! SetupVAM()
-    let addons_base = expand('$HOME') . '/dotfiles/vim/vim-addons'
-    exec 'set runtimepath+='.addons_base.'/vim-addon-manager'
+" Auto install vim
+fun! SetupPlug()
+    " Set location of plugin packages
+    "let addons_base = expand('$HOME') . '/dotfiles/vim_temp'
+    let addons_base = expand('$HOME') . '/.vim'
+    " May not be necessary
+    exec 'set runtimepath+='.addons_base.'/plug.vim'
 
-    if !isdirectory(addons_base)
-        exec '!p='.shellescape(addons_base).'; mkdir -p "$p" && cd "$p" && git clone git://github.com/MarcWeber/vim-addon-manager.git'
+    " If no plugins are installed, automatically install plug.vim to
+    " ~/.vim/autoload/
+    if empty(glob(addons_base . '/plugged'))
+      silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+            \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     endif
 
-    let g:vim_addon_manager = {}
-    let g:vim_addon_manager['plugin_sources'] = {}
-    let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/alansaul/ultisnips-snippets.git' }
-    let g:vim_addon_manager['plugin_sources']['jedi-vim'] = { 'type' : 'git', 'url': 'git://github.com/davidhalter/jedi-vim.git' }
-    "let g:vim_addon_manager['plugin_sources']['tma-multiple-cursors'] = { 'type' : 'git', 'url': 'git://github.com/terryma/vim-multiple-cursors.git' }
+    call plug#begin(expand(addons_base) . '/plugged')
 
-    "let g:vim_addon_manager['plugin_sources']['snippets'] = { 'type' : 'git', 'url': 'git://github.com/scrooloose/snipmate-snippets.git' } << Using my snippets for now as scroolooses has the wrong directory structure to work with upstream VAM, also mine includes lazily loading functions
-    call vam#ActivateAddons(['Solarized', 'blackboard', 'desert256', 'molokai', 'wombat256', 'Railscasts_Theme_GUI256color', 'xoria256', 'ctrlp', 'AutoTag', 'endwise', 'surround', 'UltiSnips', 'snippets', 'YankRing', 'The_NERD_Commenter', 'Python-mode-klen', 'fugitive', 'jedi-vim', 'Syntastic',  'powerline', 'Supertab'], {'auto_install': 1})
-    "'AutomaticLaTeXPlugin',
-    "'LaTeX-Suite_aka_Vim-LaTeX', 
+    Plug 'micha/vim-colors-solarized'
+    Plug 'powerline/powerline'
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-fugitive'
+    Plug 'preservim/nerdcommenter'
+    Plug 'dense-analysis/ale'
+    Plug 'tmhedberg/SimpylFold'
+    Plug 'ctrlpvim/ctrlp.vim'
+    " yankring, Supertab, ctrlp, jedi-vim, python-mode-klen,
+    " AutomaticLaTeXPlugin, LaTex-Suite_aka_Vim-LaTeX
 
+    "if has('nvim')
+      "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    "else
+      "" Need to call the below, from vim if not in nvim and with a virtualenv
+      "" :py3 import pip; pip.main(['install', '--user', 'pynvim'])
+      "Plug 'Shougo/deoplete.nvim'
+      "Plug 'roxma/nvim-yarp'
+      "Plug 'roxma/vim-hug-neovim-rpc'
+    "endif
+
+    "Plug 'davidhalter/jedi-vim'
+    "Plug 'deoplete-plugins/deoplete-jedi'
+    "let g:deoplete#enable_at_startup = 0
+
+    "Plug 'roxma/nvim-yarp'
+    "Plug 'ncm2/ncm2'
+    "" Fast python completion (use ncm2 if you want type info or snippet support)
+    "Plug 'ncm2/ncm2-jedi'
+    "" Words in buffer completion
+    "Plug 'ncm2/ncm2-bufword'
+    "" Filepath completion
+    "Plug 'ncm2/ncm2-path'
+
+    " Install coc.vim
+    " Fist make sure nodejs is installed
+    " curl -sL install-node.now.sh | sh
+    " Or
+    " sudo apt install nodejs
+    " sudo apt install npm
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    "Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+    ":CocInstall coc-python
+    " If you change python environment, need to set new interpreter
+    " :CocCommand python.setInterpreter
+    call plug#end()
+
+    " Then install all packages (blocking), pipe into quit and then
+    " resources the $VIMRC
+    if !empty(filter(copy(g:plugs), '!isdirectory(v:val.dir)'))
+      autocmd VimEnter * PlugInstall --sync | q | source $MYVIMRC
+    endif
 endf
-call SetupVAM()
+call SetupPlug()
 
+"call deoplete#custom#source('ale', 'rank', 999)
 
 "Neat directory initalization, ripped form
 "https://github.com/spf13/spf13-vim/blob/master/.vimrc
@@ -88,13 +138,15 @@ au VimResized * exe "normal! \<c-w>="
 set mouse=a
 "
 "set how many lines of history vim has to remember
-set history=1000
+set history=10000
 
 "Completion
 "Set wildmenu which allows for command line completion
 set wildmenu
 set wildmode=list:longest,full
 set completeopt+=longest,menu,preview
+
+set colorcolumn=100
 
 "English spell checker by typing :set spell and z= for suggestion
 ":set spell spelllang=en
@@ -149,9 +201,8 @@ syntax on
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
     set t_Co=256
 endif
+
 set background=dark
-"let g:solarized_termcolors=256
-"let g:solarized_visibility="low"
 colorscheme solarized
 
 " Line Return {{{
@@ -187,76 +238,138 @@ endfunc
 noremap <silent> <C-N><C-N> :call ToggleNumbers()<CR>
 
 "Plugin settings {
-"Syntastic (And status line, taken from Steve Losh
-
-"let g:syntastic_python_checkers = [''] "This is a bit of a hack, this should be default? Syntastic will spaz out if you dont have pyflakes (which you should) on the PATH
-
-"set statusline=%f    " Path.
-"set statusline+=%m   " Modified flag.
-"set statusline+=%r   " Readonly flag.
-"set statusline+=%w   " Preview window flag.
-"set statusline+=\ [%{getcwd()}]          " current dir
-"set statusline+=%{fugitive#statusline()} "  Git Hotness
-
-"set statusline+=\    " Space.
-
-"set statusline+=%#redbar#                " Highlight the following as a warning.
-"set statusline+=%{SyntasticStatuslineFlag()} " Syntastic errors.
-"set statusline+=%*                           " Reset highlighting.
-
-"set statusline+=%=   " Right align.
-
-
-"" Line and column position and counts.
-"set statusline+=\ (line\ %l\/%L,\ col\ %03c)
-
-"set statusline+=%#warningmsg# "enable flags in status bar
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-"let g:syntastic_enable_signs=1 "enable signs in side bar
-"let g:syntastic_auto_loc_list=2
-set laststatus=2
+set laststatus=2 " always show the status line
 
 "Supertab
-let g:SuperTabDefaultCompletionType = "context"
-
-"PYMODE
-"imap <C-A> <C-R>=RopeCodeAssistInsertMode()<CR>
-let g:pymode_rope = 0
-let g:pymode_folding = 0
-let g:pymode_lint = 1
-let g:pymode_lint_write = 1
-let g:pymode_lint_signs = 1
-let g:pymode_lint_checker = "pylint"
-let g:pymode_lint_ignore="E231,E225,E501,C0301"
-let g:pymode_run_key = '<leader>p' " Key for run python code
-let g:pymode_breakpoint_cmd = "import ipdb; ipdb.set_trace()  # XXX BREAKPOINT"
+"let g:SuperTabDefaultCompletionType = "context"
 
 "
 "Jedi
-let g:jedi#completions_command = "<C-A>"
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#popup_on_dot = 0
+"let g:jedi#completions_command = "<C-A>"
+"let g:jedi#use_tabs_not_buffers = 0
+"let g:jedi#popup_on_dot = 0
+" go-to function definition is <leader>D
+" Check documation of class or method is K
+"let g:jedi#completions_enabled = 0  " were using deoplete for completion
+"let g:jedi#use_splits_not_buffers = "right" " make go-to open in a splt
+"let $VIRTUAL_ENV = $CONDA_PREFIX
+"let jedi#force_py_version=3.8
 
-"TASK LIST
-" Toggle task list (type \td to see a list of TODO:'s etc"
-"noremap <leader>td <Plug>TaskList
+"let g:jedi#auto_initialization = 1
+"let g:jedi#completions_enabled = 1
+"let g:jedi#auto_vim_configuration = 0
+"let g:jedi#smart_auto_mappings = 0
+"let g:jedi#popup_on_dot = 0
+""let g:jedi#completions_command = ""
+"let g:jedi#show_call_signatures = "1"
 
-" TagList Settings {
-"let Tlist_Auto_Open=0 " let the tag list open automagically
-"let Tlist_Compact_Format = 1 " show small menu
-"let Tlist_Ctags_Cmd = 'ctags' " location of ctags
-"let Tlist_Enable_Fold_Column = 0 " do show folding tree
-"let Tlist_Exist_OnlyWindow = 1 " if you are the last, kill yourself
-"let Tlist_File_Fold_Auto_Close = 0 " fold closed other trees
-"let Tlist_Sort_Type = "name" " order by 
-"let Tlist_Use_Right_Window = 1 " split to the right side of the screen
-"let Tlist_WinWidth = 40 " 40 cols wide, so i can (almost always read my
-"   functions)
+"" Deoplete
+""let g:deoplete#auto_complete = 0
+"let g:python_host_prog = '/home/alan/anaconda3/envs/prowler_gpflow2/bin/python'
+"let g:python3_host_prog = '/home/alan/anaconda3/envs/prowler_gpflow2/bin/python3'
+"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
-"PROJECT
-" Add recently accessed projects menu (project plugin)
-"set viminfo^=!
+" ncm2 settings
+"autocmd BufEnter * call ncm2#enable_for_buffer()
+"set completeopt=menuone,noselect,noinsert
+"set shortmess+=c
+"inoremap <c-c> <ESC>
+"" make it fast
+"let ncm2#popup_delay = 5
+"let ncm2#complete_length = [[1, 1]]
+"" Use new fuzzy based matches
+"let g:ncm2#matcher = 'substrfuzzy'
+"
+
+" ale
+" ale linting properties
+let g:ale_linters = {
+           \   'python': ['pylint', 'mypy'],
+           \}
+let g:ale_python_pylint_options = '--rcfile $HOME/Code/main/Build_System/linting/pylint.cfg --rcfile $HOME/Code/main/Build_System/linting/pylint-extra-rules-for-production-code.cfg'
+let g:ale_python_mypy_options = '--ignore-missing-imports'
+
+
+" coc.nvim
+" Mostly grabbed from https://github.com/neoclide/coc.nvim/#example-vim-configuration
+call coc#config('python', {
+\   'jediEnabled': v:false,
+\   'signature.target': 'echo',
+\   'coc.preferences.hoverTarget': 'echo',
+\   'diagnostic.displayByAle': v:true,
+\   'suggest.autoTrigger': 'trigger',
+\ })
+"\   'python.pythonPath': expand('$HOME') . '/dotfiles/python_int'
+
+set statusline^=%{coc#status()}
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+"inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+if has('patch8.1.1068')
+  " Use `complete_info` if your (Neo)Vim version supports it.
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+"xmap <leader>f  <Plug>(coc-format-selected)
+"nmap <leader>f  <Plug>(coc-format-selected)
 
 "NERDTREE
 " Setup nerd tree shortcut to see directory listings
@@ -267,103 +380,8 @@ let g:ctrlp_map = '<leader>f'
 nnoremap <leader>F :CtrlPBuffer<cr>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc     " Linux/MacOSX
 
-"EXUBERANT TAGS
-" Remake ctags with F5
-"noremap <silent> <F6> :!ctags -R --exclude=.svn --exclude=.git --exclude=log .<CR>
-"noremap <F7> :!ctags -R --exclude=.svn --exclude=.git --exclude=log .<CR>
-"Set up tag toggle mapping
-"nnoremap <leader>t :TagbarToggle<CR>
-"Tell it where to find tags
-"autocmd BufWritePost *
-      "\ if filereadable('tags') |
-      "\   call system('ctags -R .') |
-      "\ endif
-"set tags=./tags,tags;$HOME
-
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
-"
-
-"Ultisnips
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "vim-addons/snippets/snippets"]
-let g:ultisnips_python_style="sphinx"
-
-"vim-ipython
-"Run python console, python qtconsole or python kernel in terminal
-"Type :IPython to bind vim to the console
-"<C-S> to pass a line to ipython \d to analyse whats under the cursor, can
-"execute code in the console and it has access to the <C-S> stuff. Finally
-"<C-X><C-U> autocompletes
-"<leader>d to get docs for function name under word (import needs to have been
-"ipython loaded)
-
-" vim-Latex alternative things
-" LaTeX (rubber) macro for compiling
-"nnoremap <leader>ll :w<CR>:!rubber --pdf --warn all %<CR>
-
-" View PDF macro; '%:r' is current file's root (base) name.
-"nnoremap <leader>v :!mupdf %:r.pdf &<CR><CR>
-
-let g:atp_Compiler = "bash"
-let b:atp_TexCompiler = "pdflatex"
-let b:atp_Viewer = "evince"
-let g:atp_ProgressBar=1
-nnoremap <leader>L :Tex<CR>
-let g:conceallevel=2
-let g:atp_imap_leader_2="##"
-let g:atp_imap_leader_3="]"
-let g:atp_imap_leader_1="#"
-
-"vim-latex
-" Set colorscheme, enable conceal (except for
-" subscripts/superscripts), and match conceal
-" highlight to colorscheme
-" let g:tex_conceal= 'adgm'
-" hi Conceal guibg=brblack guifg=brcyan
-"hi Conceal cterm=NONE ctermbg=NONE ctermfg=white
-"au VimEnter * hi Conceal cterm=NONE ctermbg=NONE ctermfg=white
-"au VimEnter * set conceallevel=2
-"au ColorScheme * hi! link Conceal Normal
-"set cole=2
-"let g:tex_conceal="asgm"
-
-"let g:tex_flavor = "latex"
-"let g:Tex_DefaultTargetFormat = 'pdf'
- 
-"let g:Tex_CompileRule_dvi = 'latex --interaction=nonstopmode $*'
-"let g:Tex_CompileRule_ps = 'dvips -Pwww -o $*.ps $*.dvi'
-"let g:Tex_CompileRule_pspdf = 'ps2pdf $*.ps'
-"let g:Tex_CompileRule_dvipdf = 'dvipdfm $*.dvi'
-"let g:Tex_CompileRule_pdf = 'pdflatex -synctex=1 --interaction=nonstopmode $*'
-"nnoremap <leader>r :w<CR>:!rubber --pdf --warn all %<CR>
- 
-"let g:Tex_FormatDependency_ps  = 'dvi,ps'
-"let g:Tex_FormatDependency_pspdf = 'dvi,ps,pspdf'
-"let g:Tex_FormatDependency_dvipdf = 'dvi,dvipdf'
-
-"autocmd BufNewFile,BufRead *.tex set spell
-
-"nnoremap <leader>kk :silent call Tex_RunLaTeX()<CR>
-"set shortmess+=A "Don't show warning about swap files!
-"let g:Tex_ShowErrorContext = 0 "Dont show log file
-"let g:Tex_GotoError = 0 "Dont jump to quickfix window showing errors
-
-"au BufWritePost *.tex silent call Tex_RunLaTeX()
-"au BufWritePost *.tex silent !pkill -USR1 xdvi.bin
- 
-" let g:Tex_IgnoredWarnings ='
-"       \"Underfull\n".
-"       \"Overfull\n".
-"       \"specifier changed to\n".
-"       \"You have requested\n".
-"       \"Missing number, treated as zero.\n".
-"       \"There were undefined references\n".
-"       \"Citation %.%# undefined\n".
-"       \"\oval, \circle, or \line size unavailable\n"' 
-
 
 " }
 
@@ -382,23 +400,12 @@ au bufread,bufnewfile *.rb,*.rhtml set softtabstop=2
 "If its an erb file, give html and ruby snippets
 au BufNewFile,BufRead *.html.erb set filetype=eruby.html
 "}
-" Haskell {
-au bufread,bufnewfile *.hs, set tabstop=8 
-au bufread,bufnewfile *.hs, set shiftwidth=8 
-au bufread,bufnewfile *.hs, set softtabstop=8 
-"}
 
 " If you prefer the Omni-Completion tip window to close when a selection is
 " made, these lines close it on movement in insert mode or when leaving
 " insert mode
 au CursorMovedI * if pumvisible() == 0|pclose|endif
 au InsertLeave * if pumvisible() == 0|pclose|endif
-
-" Java {
-" First call eclimd from the Eclipse folder, then :PingEclim
-" }
-" }
-
 
 " Fix D and Y
 nnoremap D d$
@@ -417,11 +424,6 @@ noremap q: :q
 cnoreabbrev <expr> w!!
             \((getcmdtype() == ':' && getcmdline() == 'w!!')
             \?('!sudo tee % >/dev/null'):('w!!'))
-
-":command TODO :noautocmd vimgrep /TODO/jg **/* | copen
-":command FIXME :noautocmd vimgrep /FIXME/jg **/* | copen
-":command TODOrb :silent! noautocmd vimgrep /TODO/jg **/*.rb **/*.feature **/*.html **/*.haml **/*.scss **/*.css | copen
-":command FIXMErb :silent! noautocmd vimgrep /FIXME/jg **/*.rb **/*.feature **/*.html **/*.haml **/*.scss **/*.css | copen
 
 
 "Clear the quickfix (useful when you've done a TODOrb and want to get rid of
@@ -447,6 +449,7 @@ nnoremap <c-right> 5<c-w><
 " Space to toggle folds.
 nnoremap <Space> za
 vnoremap <Space> za
+set foldopen-=block  " don't open folds with paragraph jump, { or }
 
 " Fix tmux's mappings for arrow keys
 "noremap OA <up>
@@ -457,10 +460,10 @@ vnoremap <Space> za
 "set t_kd=OB
 "set t_kr=OC
 "set t_kl=OD
-noremap OA <up>
-noremap OB <down>
-noremap OC <right>
-noremap OD <left>
+" noremap OA <up>
+" noremap OB <down>
+" noremap OC <right>
+" noremap OD <left>
 
 " Command to run current script by typing ;e
 "map ;p :w<CR>:exe ":!python " . getreg("%") . "" <CR>
@@ -498,11 +501,6 @@ nnoremap <C-I> <C-A>
 "the effect of `
 nnoremap ' `
 nnoremap ` '
-
-" ROT13 - fun
-"noremap <leader>r ggVGg?
-" }
-"
 
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
