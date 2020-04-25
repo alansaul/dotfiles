@@ -22,6 +22,7 @@ case "$OSTYPE" in
       ;;
    darwin*)
       alias open='open' #make this linux only!
+      alias vim='mvim -v'
       ;;
 esac
 

@@ -28,6 +28,7 @@ fun! SetupPlug()
     Plug 'dense-analysis/ale'
     Plug 'tmhedberg/SimpylFold'
     Plug 'ctrlpvim/ctrlp.vim'
+    Plug 'psf/black'
     " yankring, Supertab, ctrlp, jedi-vim, python-mode-klen,
     " AutomaticLaTeXPlugin, LaTex-Suite_aka_Vim-LaTeX
 
