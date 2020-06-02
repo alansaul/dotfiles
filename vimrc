@@ -1,4 +1,3 @@
-"Alans ~/.vimrc script, uses VAM (thanks MarcWeber) to handle all plugins!
 set nocompatible
 filetype indent plugin on | syn on
 set hidden
@@ -21,46 +20,22 @@ fun! SetupPlug()
     call plug#begin(expand(addons_base) . '/plugged')
 
     Plug 'micha/vim-colors-solarized'
-    Plug 'powerline/powerline'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-fugitive'
     Plug 'preservim/nerdcommenter'
-    Plug 'dense-analysis/ale'
     Plug 'tmhedberg/SimpylFold'
     Plug 'ctrlpvim/ctrlp.vim'
-    Plug 'psf/black'
-    " yankring, Supertab, ctrlp, jedi-vim, python-mode-klen,
-    " AutomaticLaTeXPlugin, LaTex-Suite_aka_Vim-LaTeX
-
-    "if has('nvim')
-      "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    "else
-      "" Need to call the below, from vim if not in nvim and with a virtualenv
-      "" :py3 import pip; pip.main(['install', '--user', 'pynvim'])
-      "Plug 'Shougo/deoplete.nvim'
-      "Plug 'roxma/nvim-yarp'
-      "Plug 'roxma/vim-hug-neovim-rpc'
-    "endif
-
-    "Plug 'davidhalter/jedi-vim'
-    "Plug 'deoplete-plugins/deoplete-jedi'
-    "let g:deoplete#enable_at_startup = 0
-
-    "Plug 'roxma/nvim-yarp'
-    "Plug 'ncm2/ncm2'
-    "" Fast python completion (use ncm2 if you want type info or snippet support)
-    "Plug 'ncm2/ncm2-jedi'
-    "" Words in buffer completion
-    "Plug 'ncm2/ncm2-bufword'
-    "" Filepath completion
-    "Plug 'ncm2/ncm2-path'
-
+    
+    "Plug 'Shougo/echodoc.vim'
+    "Plug 'powerline/powerline'
+    "
     " Install coc.vim
     " Fist make sure nodejs is installed
     " curl -sL install-node.now.sh | sh
     " Or
     " sudo apt install nodejs
     " sudo apt install npm
+    " make sure yarn is also installed
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     "Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
     ":CocInstall coc-python
@@ -240,69 +215,20 @@ noremap <silent> <C-N><C-N> :call ToggleNumbers()<CR>
 
 "Plugin settings {
 set laststatus=2 " always show the status line
-
-"Supertab
-"let g:SuperTabDefaultCompletionType = "context"
-
 "
-"Jedi
-"let g:jedi#completions_command = "<C-A>"
-"let g:jedi#use_tabs_not_buffers = 0
-"let g:jedi#popup_on_dot = 0
-" go-to function definition is <leader>D
-" Check documation of class or method is K
-"let g:jedi#completions_enabled = 0  " were using deoplete for completion
-"let g:jedi#use_splits_not_buffers = "right" " make go-to open in a splt
-"let $VIRTUAL_ENV = $CONDA_PREFIX
-"let jedi#force_py_version=3.8
-
-"let g:jedi#auto_initialization = 1
-"let g:jedi#completions_enabled = 1
-"let g:jedi#auto_vim_configuration = 0
-"let g:jedi#smart_auto_mappings = 0
-"let g:jedi#popup_on_dot = 0
-""let g:jedi#completions_command = ""
-"let g:jedi#show_call_signatures = "1"
-
-"" Deoplete
-""let g:deoplete#auto_complete = 0
-"let g:python_host_prog = '/home/alan/anaconda3/envs/prowler_gpflow2/bin/python'
-"let g:python3_host_prog = '/home/alan/anaconda3/envs/prowler_gpflow2/bin/python3'
-"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-" ncm2 settings
-"autocmd BufEnter * call ncm2#enable_for_buffer()
-"set completeopt=menuone,noselect,noinsert
-"set shortmess+=c
-"inoremap <c-c> <ESC>
-"" make it fast
-"let ncm2#popup_delay = 5
-"let ncm2#complete_length = [[1, 1]]
-"" Use new fuzzy based matches
-"let g:ncm2#matcher = 'substrfuzzy'
-"
-
 " ale
 " ale linting properties
-let g:ale_linters = {
-           \   'python': ['pylint', 'mypy'],
-           \}
-let g:ale_python_pylint_options = '--rcfile $HOME/Code/main/Build_System/linting/pylint.cfg --rcfile $HOME/Code/main/Build_System/linting/pylint-extra-rules-for-production-code.cfg'
-let g:ale_python_mypy_options = '--ignore-missing-imports'
+"let g:ale_linters = {
+           "\   'python': ['pylint', 'mypy'],
+           "\}
+"let g:ale_python_pylint_options = '--rcfile $HOME/Code/main/Build_System/linting/pylint.cfg --rcfile $HOME/Code/main/Build_System/linting/pylint-extra-rules-for-production-code.cfg'
+"let g:ale_python_mypy_options = '--ignore-missing-imports'
 
 
 " coc.nvim
 " Mostly grabbed from https://github.com/neoclide/coc.nvim/#example-vim-configuration
-call coc#config('python', {
-\   'jediEnabled': v:false,
-\   'signature.target': 'echo',
-\   'coc.preferences.hoverTarget': 'echo',
-\   'diagnostic.displayByAle': v:true,
-\   'suggest.autoTrigger': 'trigger',
-\ })
-"\   'python.pythonPath': expand('$HOME') . '/dotfiles/python_int'
 
-set statusline^=%{coc#status()}
+set statusline^=%{coc#status()}  " set status line to one assigned by coc
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
@@ -310,10 +236,46 @@ set updatetime=300
 
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
-
+"
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 set signcolumn=yes
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+"
+call coc#config(
+\'python', {
+\   'jediEnabled': v:false,
+\})
+call coc#config(
+\'signature', {
+\   'target': 'float',
+\   'hideOnTextChange': v:false,
+\   'preferShownAbove': v:false
+\})
+call coc#config(
+\'suggest', {
+\   'autoTrigger': 'none'
+\})
+call coc#config(
+\'coc', {
+\   'preferences.hoverTarget': 'float',
+\   'preferences.jumpCommand': 'tabe'
+\})
+"{
+    ""python.jediEnabled": true,
+    ""suggest.autoTrigger": "none",
+    ""signature.hideOnTextChange": false,
+    ""signature.preferShownAbove": false,
+    ""signature.target": "float",
+    ""coc.preferences.hoverTarget": "float",
+    ""diagnostic.displayByAle": false,
+    ""coc.preferences.jumpCommand": "tabe"
+"}
+
+"
+"\   'python.pythonPath': expand('$HOME') . '/dotfiles/python_int'
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -329,9 +291,6 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <c-space> to trigger completion.
-"inoremap <silent><expr> <c-space> coc#refresh()
-
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
 if has('patch8.1.1068')
@@ -340,6 +299,16 @@ if has('patch8.1.1068')
 else
   imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
+
+nmap <expr> <leader>t <Plug>(coc-float-hide)
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+xmap <leader>A  <Plug>(coc-codeaction)
+nmap <leader>A  <Plug>(coc-codeaction)
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -362,15 +331,12 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
-"xmap <leader>f  <Plug>(coc-format-selected)
-"nmap <leader>f  <Plug>(coc-format-selected)
+xmap <leader>=  <Plug>(coc-format-selected)
+nmap <leader>=  <Plug>(coc-format-selected)
 
 "NERDTREE
 " Setup nerd tree shortcut to see directory listings
@@ -405,8 +371,8 @@ au BufNewFile,BufRead *.html.erb set filetype=eruby.html
 " If you prefer the Omni-Completion tip window to close when a selection is
 " made, these lines close it on movement in insert mode or when leaving
 " insert mode
-au CursorMovedI * if pumvisible() == 0|pclose|endif
-au InsertLeave * if pumvisible() == 0|pclose|endif
+"au CursorMovedI * if pumvisible() == 0|pclose|endif
+"au InsertLeave * if pumvisible() == 0|pclose|endif
 
 " Fix D and Y
 nnoremap D d$
