@@ -1,8 +1,0 @@
-(dp1
-Vnp.arange(-10, 10)
-p2
-I37
-sVplot(x, f, 'g-')
-p3
-I40
-s.

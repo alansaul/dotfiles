@@ -1,8 +1,0 @@
-(dp1
-Vnp.loadtxt('auto-mpg.data')
-p2
-I149
-sVprint model.kern
-p3
-I178
-s.
