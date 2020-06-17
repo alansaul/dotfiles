@@ -8,7 +8,7 @@
 
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files="vimrc zshrc tmux.conf p10k.zsh"    # list of files/folders to symlink in homedir
+files="zshrc p10k.zsh"    # list of files/folders to symlink in homedir
 
 ##########
 
@@ -28,5 +28,10 @@ for file in $files; do
     mv ~/.$file ~/dotfiles_old/
     echo "Creating symlink to $file in home directory."
     ln -s $dir/$file ~/.$file
-done
 
+    if [ "$file" == "p10k.zsh" ]; then
+        if [[ -d ~/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
+            git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
+        fi
+    fi
+done

@@ -9,76 +9,58 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-#
-#alias python='python -B'
-#cworkon(){source ~/CanopyEnvs/$1/bin/activate;} # Alias for workon with canopy environment instead
-alias ipythons='ipython --profile=science'
 alias grep='grep --color=auto'
-alias rmpyc="find . -name '*.pyc' -delete"
 #Alias for zsh plugin which does safe deletion
 alias rm=trash
-
-export LS_OPTIONS='--color'
-alias l='ls $LS_OPTIONS'
-alias ll='ls $LS_OPTIONS -lh'
 alias lll='ls $LS_OPTIONS -alh'
 alias sl='ls $LS_OPTIONS' # often screw this up
 alias j='z'
 
+# vim alias order
+if [ $(command -v nvim) ]; then
+    export VIM_COMMAND='nvim'
+elif [ $(command -v mvim) ]; then
+    export VIM_COMMAND='mvim -v'
+else
+    export VIM_COMMAND='vim'
+fi
+alias vim=$VIM_COMMAND
+export EDITOR=$VIM_COMMAND
+export VISUAL=$VIM_COMMAND
+
 case "$OSTYPE" in
-   cygwin*)
-      alias open="cmd /c start"
-      ;;
-   linux*)
-      alias open='xdg-open' #make this linux only!
-      alias vim='nvim'
-      export EDITOR="nvim"
-      ;;
-   darwin*)
-      alias open='open' #make this linux only!
-      alias vim='mvim -v'
-      export EDITOR="mvim -v"
-      #export CXX=/usr/local/cellar/gcc/8.1.0/bin/g++-8
-      # put your paths to clang-4.0 and clang++-4.0:
-      export CC=/usr/local/opt/llvm/bin/clang
-      export CXX=/usr/local/opt/llvm/bin/clang++
-      export CXX11=/usr/local/opt/llvm/bin/clang++
-      export CXX1X=/usr/local/opt/llvm/bin/clang++
-      export PATH="/usr/local/opt/llvm/bin:$PATH"
-      ;;
+    cygwin*)
+        alias open="cmd /c start"
+        ;;
+    linux*)
+        alias open='xdg-open' #make this linux only!
+        ;;
+    darwin*)
+        alias open='open' #make this linux only!
+        #export CXX=/usr/local/cellar/gcc/8.1.0/bin/g++-8
+        # put your paths to clang-4.0 and clang++-4.0:
+        export CC=/usr/local/opt/llvm/bin/clang
+        export CXX=/usr/local/opt/llvm/bin/clang++
+        export CXX11=/usr/local/opt/llvm/bin/clang++
+        export CXX1X=/usr/local/opt/llvm/bin/clang++
+        export PATH="/usr/local/opt/llvm/bin:$PATH"
 esac
 
-notes() {
-    local fpath=$HOME/notes.md
-    if [ "$1" == "gvim" ]; then
-        gvim + $fpath
-    elif [ "$1" == "vim" ]; then
-        gvim + $fpath
-    elif [ "$1" == "date" ]; then
-        echo '' >> $fpath
-        echo '# '`date +"%m-%d-%Y-%T"` >> $fpath
-        echo '---------------------' >> $fpath
-    elif [ "$1" == "" ]; then
-        less +G $fpath
-    else
-        echo '' >> $fpath
-        echo $@ >> $fpath
-    fi
-}
-
-#function detexcomment { cat "$1" | sed '/\\begin{comment}/,/\\end{comment}/d' | detex | wc; }
-
-#set editing-mode vi
-bindkey -v 
-bindkey '\e[3~' delete-char
-bindkey '^R' history-incremental-search-backward
-setopt hist_ignore_all_dups
-
-# Locks to first column, like after Ctrl-Cing a program http://jonisalonen.com/2012/your-bash-prompt-needs-this/
-#$PS1="\[\033[G\]$PS1"
+export PROWLER_IO_HOME=~/PROWLER_IO_HOME
+export VIRTUAL_ENV='prowler2'
 
 #Default path
 #export PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
+export PYTHONPATH=/home/alan/Code/main/Platform_Generic/tensorflow_ops:$PYTHONPATH
+export LD_LIBRARY_PATH=/usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH
+export LD_INCLUDE_PATH=:/usr/local/cuda/include:/usr/local/cuda/extras/CUPTI/include:$LD_INCLUDE_PATH
+
+#export TEXINPUTS=:$HOME/Work/publications/tex_inputs//
+#export BSTINPUTS=:$HOME/Work/publications/tex_inputs//
+#export BIBINPUTS=:$HOME/Work/publications/bib//
+
+# Locks to first column, like after Ctrl-Cing a program http://jonisalonen.com/2012/your-bash-prompt-needs-this/
+#$PS1="\[\033[G\]$PS1"
 
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
@@ -87,14 +69,13 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-#export ZSH_THEME="blinks-dark-bg"
-#export ZSH_CUSTOM="$HOME/Work/Code/dotfiles/zsh_custom:$HOME/dotfiles/zsh_custom"
-#export ZSH_CUSTOM="$HOME/Work/Code/dotfiles/zsh_custom"
-#export ZSH_THEME="blinks-solarized"
-export ZSH_THEME="powerlevel10k/powerlevel10k"
-#export ZSH_THEME="agnoster"
-#export ZSH_THEME="robbyrussell"
-# For gnome set the ls colors to something proper may need changing for osx to check for the file
+if [[ -f ~/.p10k.zsh ]]; then 
+    export ZSH_THEME="powerlevel10k/powerlevel10k"
+else 
+    export ZSH_THEME="blinks"
+    echo "powerlevel10k not installed"
+fi
+POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 
 export SOLARIZED_THEME='dark'
 
@@ -115,12 +96,11 @@ export SOLARIZED_THEME='dark'
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git github osx vi-mode python z colored-man-pages extract virtualenv)
-#autojumo you press j Darwin and it will jump to the most likely directory
+#plugins=(git github osx vi-mode python z colored-man-pages extract virtualenv)
+#z you press j (or z via alias) "word" and it will jump to the most likely directory
 #extract something.tar.gz will extract pretty much any compression type
 #pyclean deletes all .pyc files and pyfind finds all .py files
 #osx has a cdf which cd's to the current finders window
-
 
 #And add runtime and headers
 #export LDFLAGS = -L/usr/local/opt/llvm/lib
@@ -128,10 +108,6 @@ plugins=(git github osx vi-mode python z colored-man-pages extract virtualenv)
 
 #source /usr/local/bin/virtualenvwrapper.sh
 source $ZSH/oh-my-zsh.sh
-
-export TEXINPUTS=:$HOME/Work/publications/tex_inputs//
-export BSTINPUTS=:$HOME/Work/publications/tex_inputs//
-export BIBINPUTS=:$HOME/Work/publications/bib//
 
 #__conda_setup="$(CONDA_REPORT_ERRORS=false '/Users/alansaul/miniconda3/bin/conda' shell.bash hook 2> /dev/null)"
 #if [ $? -eq 0 ]; then
@@ -147,15 +123,19 @@ export BIBINPUTS=:$HOME/Work/publications/bib//
 #unset __conda_setup
 
 export SLUGIFY_USES_TEXT_UNIDECODE=yes
-export PROWLER_IO_HOME=/home/alansaul/PROWLER_IO_HOME
 
 # Fuzzy finding
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export NVM_DIR="/home/alan/.nvm"
+export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-source ~/envs/prowler2/bin/activate
+if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
+    source "${VIRTUAL_ENV}/bin/activate"
+fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+if [[ -f ~/.p10k.zsh ]]; then 
+    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+fi
