@@ -32,10 +32,12 @@ case "$OSTYPE" in
    linux*)
       alias open='xdg-open' #make this linux only!
       alias vim='nvim'
+      export EDITOR="nvim"
       ;;
    darwin*)
       alias open='open' #make this linux only!
       alias vim='mvim -v'
+      export EDITOR="mvim -v"
       #export CXX=/usr/local/cellar/gcc/8.1.0/bin/g++-8
       # put your paths to clang-4.0 and clang++-4.0:
       export CC=/usr/local/opt/llvm/bin/clang
@@ -66,8 +68,6 @@ notes() {
 
 #function detexcomment { cat "$1" | sed '/\\begin{comment}/,/\\end{comment}/d' | detex | wc; }
 
-# Bacward search in the shell history with <C-r>
-export EDITOR="vim"
 #set editing-mode vi
 bindkey -v 
 bindkey '\e[3~' delete-char
