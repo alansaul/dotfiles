@@ -247,6 +247,7 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 call coc#config(
 \'python', {
 \   'jediEnabled': v:false,
+\   'linting.pep8Args': ['--max-line-length=100']
 \})
 call coc#config(
 \'signature', {
@@ -263,6 +264,7 @@ call coc#config(
 \   'preferences.hoverTarget': 'float',
 \   'preferences.jumpCommand': 'tabe'
 \})
+
 "{
     ""python.jediEnabled": true,
     ""suggest.autoTrigger": "none",
