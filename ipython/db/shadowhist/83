@@ -1,5 +1,0 @@
-(dp1
-Vfor i in range(100):\u000a    f = np.random.multivariate_normal([0.0 for i in range(len(x))], np.outer(x, x))
-p2
-I66
-s.

@@ -1,8 +1,0 @@
-(dp1
-Vy = f + randn(4,1)*0.1
-p2
-I31
-sVmodel.predict(predict_X)
-p3
-I184
-s.

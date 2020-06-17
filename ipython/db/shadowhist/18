@@ -1,8 +1,0 @@
-(dp1
-Vf = np.random.multivariate_normal([0.0 for i in range(len(x))], (1+np.outer(x, x))**8)
-p2
-I56
-sVlin = ones((20,20))
-p3
-I100
-s.

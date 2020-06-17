@@ -1,8 +1,0 @@
-(dp1
-Vimport numpy as np
-p2
-I4
-sVplt.scatter(auto_data[:,4], auto_data[:,0])
-p3
-I169
-s.

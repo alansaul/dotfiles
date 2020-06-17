@@ -1,5 +1,0 @@
-(dp1
-Vf = np.random.multivariate_normal([0.0 for i in range(len(x))], ones((len(x),len(x)))*25)
-p2
-I59
-s.

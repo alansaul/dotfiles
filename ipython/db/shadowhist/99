@@ -1,8 +1,0 @@
-(dp1
-Vclose
-p2
-I35
-sVdot(x.T, x)
-p3
-I44
-s.

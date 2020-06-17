@@ -8,7 +8,7 @@
 
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files="ipython dircolors vimrc zshrc tmux.conf pylintrc"    # list of files/folders to symlink in homedir
+files="vimrc zshrc tmux.conf p10k.zsh"    # list of files/folders to symlink in homedir
 
 ##########
 
