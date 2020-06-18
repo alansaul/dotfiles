@@ -53,7 +53,7 @@ case "$OSTYPE" in
 esac
 
 export PROWLER_IO_HOME=~/PROWLER_IO_HOME
-export VIRTUAL_ENV='prowler2'
+export VIRTUAL_ENV=~/envs/prowler2
 
 #Default path
 #export PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
