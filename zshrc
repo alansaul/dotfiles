@@ -102,7 +102,7 @@ export SOLARIZED_THEME='dark'
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
-#plugins=(git github osx vi-mode python z colored-man-pages extract virtualenv)
+plugins=(git github osx vi-mode python z colored-man-pages extract virtualenv)
 #z you press j (or z via alias) "word" and it will jump to the most likely directory
 #extract something.tar.gz will extract pretty much any compression type
 #pyclean deletes all .pyc files and pyfind finds all .py files
