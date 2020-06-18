@@ -1,5 +1,11 @@
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-    exec tmux new-session -A -s default
+if command -v tmux &> /dev/null && [[ -n "$PS1" ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+    #[[ ! "$TERM" =~ screen ]
+    if [[ -n "$SSH_CONNECTION" ]]; then
+        exec tmux new-session -A -s default_ssh
+    else
+        exec tmux new-session -A -s default
+    fi
+else
 fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
