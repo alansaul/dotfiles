@@ -61,6 +61,9 @@ export PYTHONPATH=/home/alan/Code/main/Platform_Generic/tensorflow_ops:$PYTHONPA
 export LD_LIBRARY_PATH=/usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH
 export LD_INCLUDE_PATH=:/usr/local/cuda/include:/usr/local/cuda/extras/CUPTI/include:$LD_INCLUDE_PATH
 
+# Install poetry
+export PATH="$HOME/.poetry/bin:$PATH"
+
 #export TEXINPUTS=:$HOME/Work/publications/tex_inputs//
 #export BSTINPUTS=:$HOME/Work/publications/tex_inputs//
 #export BIBINPUTS=:$HOME/Work/publications/bib//
