@@ -1,0 +1,47 @@
+source ~/.vimrc
+
+
+""" Replicate non-working vim actions
+" Replicate clearing
+map <c-l><c-l> :nohl<CR>
+
+""" Pycharm specific
+" open terminal
+map <leader>T :action ActivateTerminalToolWindow<CR>
+
+" Debugger
+map <leader>D :action Debug<CR>
+
+" Breakpoints
+map <leader>b :action ToggleLineBreakpoint<CR>
+map <leader>B :action ViewBreakpoints<CR>
+
+""" Ctrl P replication
+map <leader>f :action GotoFile<CR>
+
+""" NERDTREE replication
+map <leader>n :action ActivateProjectToolWindow<CR>
+
+" Setup NERDCommenter replication
+set commentary
+map <leader>cc gcc
+
+""" coc.nvim replications
+" cycle through errors
+map [g :action GotoPreviousError<CR>
+map ]g :action GotoNextError<CR>
+map <leader>gd :action GotoDeclaration<CR>
+map <leader>gi :action GotoImplementation<CR>
+map <leader>a :action ShowIntentionActions<CR>
+map <leader>rn :action ChangesView.Rename<CR>
+map <leader>rf :action RefactoringMenu<CR>
+map <leader>= :action ReformatCode<CR>
+"xmap <leader>= :action ReformatCode<CR>
+
+" Bunch of live templates for math
+" https://unicode-table.com/en/sets/greek-symbols/
+" alpha α
+" beta β
+" gamma γ
+" etc
+
