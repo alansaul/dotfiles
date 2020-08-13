@@ -53,11 +53,11 @@ case "$OSTYPE" in
 esac
 
 export PROWLER_IO_HOME=~/PROWLER_IO_HOME
-export VIRTUAL_ENV=~/envs/prowler2
+#export VIRTUAL_ENV=~/envs/prowler2
 
 #Default path
 #export PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
-export PYTHONPATH=/home/alan/Code/main/Platform_Generic/tensorflow_ops:$PYTHONPATH
+#export PYTHONPATH=/home/alan/Code/main/Platform_Generic/tensorflow_ops:$PYTHONPATH
 export LD_LIBRARY_PATH=/usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH
 export LD_INCLUDE_PATH=:/usr/local/cuda/include:/usr/local/cuda/extras/CUPTI/include:$LD_INCLUDE_PATH
 

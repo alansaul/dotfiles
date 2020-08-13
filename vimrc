@@ -25,6 +25,7 @@ fun! SetupPlug()
     Plug 'preservim/nerdcommenter'
     Plug 'tmhedberg/SimpylFold'
     Plug 'ctrlpvim/ctrlp.vim'
+    Plug 'psf/black', { 'tag': '19.10b0' }
     
     "Plug 'Shougo/echodoc.vim'
     "Plug 'powerline/powerline'
