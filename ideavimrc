@@ -1,5 +1,7 @@
 source ~/.vimrc
 
+set visualbell
+set noerrorbells
 
 """ Replicate non-working vim actions
 " Replicate clearing
