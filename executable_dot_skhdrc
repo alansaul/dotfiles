@@ -1,0 +1,107 @@
+#
+# === Session defaults ===
+# reset border color in default mode
+:: default : yabai -m config active_window_border_color 0xE032CD32
+# kickstart yabai 
+#hyper - y : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
+# restart yabai
+
+cmd + lctrl + alt - r : yabai --restart-service"
+cmd + lctrl + alt - y : yabai --start-service"
+cmd + lctrl + alt - k : yabai --stop-service"
+# lock screen immediately
+# cmd - escape : pmset displaysleepnow 
+# logout
+# cmd + alt - e : osascript -e 'tell app "System Events" to log out'
+# power down 
+# cmd + alt - p : osascript -e 'tell app "System Events" to shut down'
+# reboot
+# cmd + alt - b : osascript -e 'tell app "System Events" to restart'
+# sleep 
+# cmd + alt - s : osascript -e 'tell application "System Events" to sleep'
+
+# === launch commands ===
+# open kitty terminal, blazingly fast compared to iTerm/Hyper
+cmd - return : /Applications/iTerm.app/Contents/MacOS/iTerm2 --single-instance -d ~
+# open chrome 
+cmd + alt - return : open -na /Applications/Chrome.app
+#  open finder
+# cmd - n : open `pwd`
+# open system preferences
+# hyper - c : open "x-apple.systempreferences:"
+# === Resize Mode ===
+# Set resize border color 
+:: resize @ : yabai -m config active_window_border_color 0xFFFF00FF
+# toggle resize mode 
+resize < cmd + alt - r ; default
+default < cmd + alt - r ; resize
+# resize commands
+resize < h : yabai -m window --resize left:-50:0; \
+                  yabai -m window --resize right:-50:0
+resize < j : yabai -m window --resize bottom:0:50; \
+                  yabai -m window --resize top:0:50
+resize < k : yabai -m window --resize top:0:-50; \
+                  yabai -m window --resize bottom:0:-50
+resize < l : yabai -m window --resize right:50:0; \
+                  yabai -m window --resize left:50:0
+
+# === Navigation ===
+# window focus
+alt - h : yabai -m window --focus west
+alt - j : yabai -m window --focus south
+alt - k : yabai -m window --focus north
+alt - l : yabai -m window --focus east
+
+# === Modification === 
+# Move window relatively
+cmd + alt - h : yabai -m window --warp west
+cmd + alt - j : yabai -m window --warp south
+cmd + alt - k : yabai -m window --warp north
+cmd + alt - l : yabai -m window --warp east
+
+# send window to space 
+lctrl + alt - 1 : yabai -m window --space 1
+lctrl + alt - 2 : yabai -m window --space 2
+lctrl + alt - 3 : yabai -m window --space 3
+lctrl + alt - 4 : yabai -m window --space 4
+lctrl + alt - 5 : yabai -m window --space 5
+lctrl + alt - 6 : yabai -m window --space 6
+lctrl + alt - 7 : yabai -m window --space 7
+lctrl + alt - 8 : yabai -m window --space 8
+
+# Equalize size of windows
+cmd + shift - z : yabai -m space --balance
+
+# Enable / Disable gaps in current workspace
+lcmd - i : yabai -m space --toggle padding; \
+	  yabai -m space --toggle gap; \
+	  yabai -m config external_bar off:0:0; \
+	  sketchybar --bar hidden=true;
+
+rcmd - i : yabai -m space --toggle padding; \
+	 yabai -m space --toggle gap; \
+	 yabai -m config external_bar all:0:0;\
+	 sketchybar --bar hidden=false;
+
+# Rotate windows clockwise and anticlockwise
+alt - r         : yabai -m space --rotate 270
+shift + alt - r : yabai -m space --rotate 90
+
+# Rotate on X and Y Axis
+shift + alt - x : yabai -m space --mirror x-axis
+shift + alt - y : yabai -m space --mirror y-axis
+
+# Set insertion point for focused container
+shift + lctrl + alt - h : yabai -m window --insert west
+shift + lctrl + alt - j : yabai -m window --insert south
+shift + lctrl + alt - k : yabai -m window --insert north
+shift + lctrl + alt - l : yabai -m window --insert east
+
+# Float / Unfloat window
+shift + alt - space : \
+    yabai -m window --toggle float; \
+    yabai -m window --toggle border
+
+# Make window native fullscreen
+alt - f         : yabai -m window --toggle zoom-fullscreen
+shift + alt - f : yabai -m window --toggle native-fullscreen

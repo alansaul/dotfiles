@@ -1,0 +1,5 @@
+README.md
+{{- if ne .chezmoi.os "darwin" }}
+.yabairc  # only manage if macos
+.skhdrc
+{{- end }}
