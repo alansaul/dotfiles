@@ -1,12 +1,13 @@
-if command -v tmux &> /dev/null && [[ -n "$PS1" ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-    #[[ ! "$TERM" =~ screen ]
-    if [[ -n "$SSH_CONNECTION" ]]; then
-        exec tmux new-session -A -s default_ssh
-    else
-        exec tmux new-session -A -s default
-    fi
-else
-fi
+
+#if command -v tmux &> /dev/null && [[ -n "$PS1" ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+#    #[[ ! "$TERM" =~ screen ]
+#    if [[ -n "$SSH_CONNECTION" ]]; then
+#        exec tmux new-session -A -s default_ssh
+#    else
+#        exec tmux new-session -A -s default
+#    fi
+#else
+#fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -16,7 +17,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 alias grep='grep --color=auto'
-#Alias for zsh plugin which does safe deletion
 alias rm=trash
 alias lll='ls $LS_OPTIONS -alh'
 alias sl='ls $LS_OPTIONS' # often screw this up
@@ -42,7 +42,7 @@ case "$OSTYPE" in
         alias open='xdg-open' #make this linux only!
         ;;
     darwin*)
-        alias open='open' #make this linux only!
+        alias open='open'
         #export CXX=/usr/local/cellar/gcc/8.1.0/bin/g++-8
         # put your paths to clang-4.0 and clang++-4.0:
         export CC=/usr/local/opt/llvm/bin/clang
@@ -53,20 +53,12 @@ case "$OSTYPE" in
 esac
 
 export PROWLER_IO_HOME=~/PROWLER_IO_HOME
-#export VIRTUAL_ENV=~/envs/prowler2
-
-#Default path
-#export PATH=/usr/bin:/bin:/usr/sbin:/sbin:.
-#export PYTHONPATH=/home/alan/Code/main/Platform_Generic/tensorflow_ops:$PYTHONPATH
-export LD_LIBRARY_PATH=/usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH
-export LD_INCLUDE_PATH=:/usr/local/cuda/include:/usr/local/cuda/extras/CUPTI/include:$LD_INCLUDE_PATH
 
 # Install poetry
-export PATH="$HOME/.poetry/bin:$PATH"
+export PATH="$HOME/.poetry/bin:$HOME/.local/bin:$PATH"
 
-#export TEXINPUTS=:$HOME/Work/publications/tex_inputs//
-#export BSTINPUTS=:$HOME/Work/publications/tex_inputs//
-#export BIBINPUTS=:$HOME/Work/publications/bib//
+ulimit -Hn 250000
+ulimit -n 150000
 
 # Locks to first column, like after Ctrl-Cing a program http://jonisalonen.com/2012/your-bash-prompt-needs-this/
 #$PS1="\[\033[G\]$PS1"
@@ -88,53 +80,24 @@ POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 
 export SOLARIZED_THEME='dark'
 
-# Set to this to use case-sensitive completion
-# CASE_SENSITIVE="true"
-
 # Comment this out to disable weekly auto-update checks
-# DISABLE_AUTO_UPDATE="true"
+DISABLE_AUTO_UPDATE="true"
 
-# Uncomment following line if you want to disable colors in ls
-# DISABLE_LS_COLORS="true"
-
-# Uncomment following line if you want to disable autosetting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment following line if you want disable red dots displayed while waiting for completion
-# DISABLE_COMPLETION_WAITING_DOTS="true"
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git github osx vi-mode python z colored-man-pages extract virtualenv)
+plugins=(git github vi-mode python z colored-man-pages extract virtualenv)
 #z you press j (or z via alias) "word" and it will jump to the most likely directory
 #extract something.tar.gz will extract pretty much any compression type
-#pyclean deletes all .pyc files and pyfind finds all .py files
-#osx has a cdf which cd's to the current finders window
 
+#Default path
 #And add runtime and headers
 #export LDFLAGS = -L/usr/local/opt/llvm/lib
 #export CPPFLAGS = -I/usr/local/opt/llvm/include
+export LD_LIBRARY_PATH=/usr/local/cuda-11.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda-11.0/lib64:$LD_LIBRARY_PATH
+export LD_INCLUDE_PATH=:/usr/local/cuda/include:/usr/local/cuda/extras/CUPTI/include:$LD_INCLUDE_PATH
 
-#source /usr/local/bin/virtualenvwrapper.sh
 source $ZSH/oh-my-zsh.sh
 
-#__conda_setup="$(CONDA_REPORT_ERRORS=false '/Users/alansaul/miniconda3/bin/conda' shell.bash hook 2> /dev/null)"
-#if [ $? -eq 0 ]; then
-#    \eval "$__conda_setup"
-#else
-#    if [ -f "/Users/alansaul/miniconda3/etc/profile.d/conda.sh" ]; then
-#        . "/Users/alansaul/miniconda3/etc/profile.d/conda.sh"
-#        CONDA_CHANGEPS1=false conda activate base
-#    else
-#        \export PATH="/Users/alansaul/miniconda3/bin:$PATH"
-#    fi
-#fi
-#unset __conda_setup
-
 export SLUGIFY_USES_TEXT_UNIDECODE=yes
-
-# Fuzzy finding
-#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -148,3 +111,10 @@ fi
 if [[ -f ~/.p10k.zsh ]]; then 
     [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 fi
+
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+
+export PATH="$PYENV_ROOT:$PATH"
+export PIPENV_PYTHON="$PYENV_ROOT/python"

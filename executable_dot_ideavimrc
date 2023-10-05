@@ -1,7 +1,7 @@
 source ~/.vimrc
+set scrolloff=0
 
 set visualbell
-set noerrorbells
 
 """ Replicate non-working vim actions
 " Replicate clearing
@@ -34,6 +34,7 @@ map [g :action GotoPreviousError<CR>
 map ]g :action GotoNextError<CR>
 map <leader>gd :action GotoDeclaration<CR>
 map <leader>gi :action GotoImplementation<CR>
+map <leader>dg :action Back<CR>
 map <leader>a :action ShowIntentionActions<CR>
 map <leader>rn :action ChangesView.Rename<CR>
 map <leader>rf :action RefactoringMenu<CR>
