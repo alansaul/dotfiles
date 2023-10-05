@@ -49,7 +49,9 @@ case "$OSTYPE" in
         export CXX=/usr/local/opt/llvm/bin/clang++
         export CXX11=/usr/local/opt/llvm/bin/clang++
         export CXX1X=/usr/local/opt/llvm/bin/clang++
-        export PATH="/usr/local/opt/llvm/bin:$PATH"
+        export PATH="/usr/local/opt/llvm/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+        export LDFLAGS=-L/usr/local/opt/llvm/lib
+        export CPPFLAGS=-I/usr/local/opt/llvm/include
 esac
 
 export PROWLER_IO_HOME=~/PROWLER_IO_HOME
@@ -83,14 +85,11 @@ export SOLARIZED_THEME='dark'
 # Comment this out to disable weekly auto-update checks
 DISABLE_AUTO_UPDATE="true"
 
-plugins=(git github vi-mode python z colored-man-pages extract virtualenv)
+plugins=(git github macos vi-mode python z colored-man-pages extract virtualenv)
 #z you press j (or z via alias) "word" and it will jump to the most likely directory
 #extract something.tar.gz will extract pretty much any compression type
 
 #Default path
-#And add runtime and headers
-#export LDFLAGS = -L/usr/local/opt/llvm/lib
-#export CPPFLAGS = -I/usr/local/opt/llvm/include
 export LD_LIBRARY_PATH=/usr/local/cuda-11.0/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 export LD_LIBRARY_PATH=/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda-11.0/lib64:$LD_LIBRARY_PATH
 export LD_INCLUDE_PATH=:/usr/local/cuda/include:/usr/local/cuda/extras/CUPTI/include:$LD_INCLUDE_PATH
@@ -102,10 +101,17 @@ export SLUGIFY_USES_TEXT_UNIDECODE=yes
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# source $(brew --prefix nvm)/nvm.sh
 
 if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
     source "${VIRTUAL_ENV}/bin/activate"
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/alansaul/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/alansaul/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/alansaul/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/alansaul/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 if [[ -f ~/.p10k.zsh ]]; then 
