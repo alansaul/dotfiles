@@ -1,3 +1,7 @@
+# plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+
 # Helpers:
 # To copy and paste hold shift whilst selecting and right clicking
 # If in a split window, maximise first with bind-key z, then copy then toggle with bind-key z again
@@ -123,3 +127,6 @@ set-option -g automatic-rename-format '#{b:pane_current_path}'
 set-option -g default-terminal "tmux-256color" 
 # tell Tmux that outside terminal supports true color
 set-option -sa terminal-overrides ",gnome-terminal:RGB"
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'

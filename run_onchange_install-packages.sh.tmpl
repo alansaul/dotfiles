@@ -40,13 +40,16 @@ then
     brew install pyenv
 
     echo "Installing other applications"
-    brew install trash-cli node npm xclip
+    brew install trash-cli node npm xclip reattach-to-user-namespace
     brew install --cask macvim
 
     echo "Installing yarn using npm"
     sudo npm install -g corepack
     corepack enable
     corepack prepare yarn@stable --activate
+
+    echo "Installing ncurses for tmux"
+    /usr/bin/tic -xe tmux-256color ~/.tmux-256color.info
 else
     echo "Skipping package installation script"
 fi
