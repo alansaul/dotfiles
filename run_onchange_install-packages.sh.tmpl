@@ -2,16 +2,18 @@
 
 #!/bin/sh
 
-# For pyenv
+echo "Installing applications for linux; note needs sudo"
+
+echo "Installing pyenv"
 sudo apt install make build-essential libssl-dev zlib1g-dev \
 libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
 libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl
 curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 
-# other apps
+echo "Installing other cli applications"
 sudo apt install trash-cli nvim nodejs npm xclip
 
-# install yarn
+echo "Installing yarn using npm"
 sudo npm install -g corepack
 corepack enable
 corepack prepare yarn@stable --activate
@@ -19,15 +21,20 @@ corepack prepare yarn@stable --activate
 {{ else if eq .chezmoi.os "darwin" -}}
 
 #!/bin/sh
+
+echo "Installing applications for macos; note needs homebrew"
+
+echo "Updating home brew"
 brew update
 
-# for pyenv
+echo "Installing pyenv"
 brew install pyenv
 
-# other apps
+echo "Installing other applications"
 brew install trash-cli node npm xclip
 brew install --cask macvim
 
+echo "Installing yarn using npm"
 sudo npm install -g corepack
 corepack enable
 corepack prepare yarn@stable --activate
