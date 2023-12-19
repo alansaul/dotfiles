@@ -1,9 +1,10 @@
 {{ if eq .chezmoi.os "linux" -}}
 
-#!/bin/sh
+#!/bin/bash
 
 read -r -p "Would you like to install the dotfiles specified packages with linux? [y/N] " response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+response=${response,,}    # tolower
+if [[ "$response" =~ ^(yes|y)$ ]]
 then
     echo "Installing applications for linux; note needs sudo"
 
@@ -14,10 +15,12 @@ then
     curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 
     echo "Installing other cli applications"
-    sudo apt install trash-cli nvim nodejs npm xclip
+    sudo apt install trash-cli nodejs npm xclip fzf neovim
 
     echo "Installing yarn using npm"
-    sudo npm install -g corepack
+    # sudo?
+    npm install -g npm@latest
+    npm install -g corepack
     corepack enable
     corepack prepare yarn@stable --activate
 else
@@ -44,7 +47,9 @@ then
     brew install --cask macvim
 
     echo "Installing yarn using npm"
-    sudo npm install -g corepack
+
+    # sudo?
+    npm install -g corepack
     corepack enable
     corepack prepare yarn@stable --activate
 
