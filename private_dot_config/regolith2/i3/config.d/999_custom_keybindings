@@ -47,6 +47,7 @@ bindsym Print exec flameshot gui
 
 # Pycharm
 for_window [class="jetbrains-pycharm"] floating disable;
+for_window [class="Kit"] floating enable;
 
 # Change brightness using brightness mode
 mode "Brightness Mode" {
