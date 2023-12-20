@@ -15,11 +15,22 @@ then
     curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 
     echo "Installing other cli applications"
-    sudo apt install trash-cli nodejs npm xclip fzf neovim
+    sudo apt install trash-cli nodejs xclip fzf neovim
+
+    echo "Installing javascript features"
+    echo "Install nvm"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+    # temporarily put on path
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+    echo "Install node and npm using nvm"
+    nvm install stable --reinstall-packages-from=current
 
     echo "Installing yarn using npm"
     # sudo?
-    npm install -g npm@latest
+    # npm install -g npm@latest
     npm install -g corepack
     corepack enable
     corepack prepare yarn@stable --activate
@@ -43,18 +54,30 @@ then
     brew install pyenv
 
     echo "Installing other applications"
-    brew install trash-cli node npm xclip reattach-to-user-namespace
+    brew install trash-cli node xclip reattach-to-user-namespace
     brew install --cask macvim
 
-    echo "Installing yarn using npm"
+    echo "Installing ncurses for tmux"
+    /usr/bin/tic -xe tmux-256color ~/.tmux-256color.info
 
+    echo "Installing javascript features"
+    echo "Install nvm"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+    # temporarily put on path
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+    echo "Install node and npm using nvm"
+    nvm install stable --reinstall-packages-from=current
+
+    echo "Installing yarn using npm"
     # sudo?
+    # npm install -g npm@latest
     npm install -g corepack
     corepack enable
     corepack prepare yarn@stable --activate
 
-    echo "Installing ncurses for tmux"
-    /usr/bin/tic -xe tmux-256color ~/.tmux-256color.info
 else
     echo "Skipping package installation script"
 fi

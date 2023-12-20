@@ -2,6 +2,7 @@ source ~/.vimrc
 set scrolloff=0
 
 set visualbell
+set noerrorbells
 
 """ Replicate non-working vim actions
 " Replicate clearing

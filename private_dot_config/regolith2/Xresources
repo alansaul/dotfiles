@@ -19,4 +19,5 @@ regolith.look.path: /usr/share/regolith-look/solarized-dark
 i3xrocks.label.notify.some: ORANGE_GLYPH(typeface_bar_glyph_notify_some_red)
 i3xrocks.label.notify.error: ORANGE_GLYPH(typeface_bar_glyph_notify_error_red)
 
+i3-wm.bar.position: top
 regolith.wallpaper.file: /home/alan/Downloads/web-cliffs-3440.png
