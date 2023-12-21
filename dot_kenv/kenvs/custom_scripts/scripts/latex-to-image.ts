@@ -209,15 +209,18 @@ let createAndLoadLatex = async () => {
 
 let changeSettings = async () => {
   while (true) {
-    const [height] = await fields([
-      { label: "Image Height", value: "30", min: 0, },
-    ])
-    const parsedHeight = parseInt(height)
-    if (!Number.isNaN(parsedHeight)) {
-      imageHeight = parsedHeight
-    }
-    await arg("Empty - tab back")
-    setTab("Latex")
+    const [height] = await fields({
+      fields:[{label: "Image Height", value: "30", min: 0}],
+      onSubmit: (input, state) => {
+        // To set the tab, UI still needs to be available, so do it on submit
+        const height = state.value?.["0"]
+        const parsedHeight = parseInt(height)
+        if (!Number.isNaN(parsedHeight)) {
+          imageHeight = parsedHeight
+        }
+        setTab("Latex")
+      }
+    })
   }
 }
 
