@@ -157,7 +157,6 @@ let actions: Action[] = [
     onAction: async (input, state) => {
       const selectedValue = state?.focused?.value
       setInput(selectedValue ? selectedValue : "")
-      inspect(state)
     },
   },
   {
