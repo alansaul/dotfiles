@@ -2,7 +2,6 @@
 
 import "@johnlindquist/kit"
 import { Action } from "@johnlindquist/kit"
-import { Channel } from "@johnlindquist/kit/core/enum"
 
 // I need to downgrade this to sharp@0.32.6 for linux as 0.33 seems to be broken
 import sharp from 'sharp'
@@ -73,10 +72,7 @@ const resizedSvgToSharp = async (
 
 
 const pngBufferToClipboard = async (pngBuffer: Buffer) => {
-  let filePath = tmpPath("latex.png")
-  await writeFile(filePath, pngBuffer)
-  await sendWait(Channel.CLIPBOARD_WRITE_IMAGE, filePath)
-  // await sendWait(Channel.CLIPBOARD_WRITE_IMAGE, pngBuffer)
+  await clipboard.writeImage(pngBuffer)
 }
 
 
