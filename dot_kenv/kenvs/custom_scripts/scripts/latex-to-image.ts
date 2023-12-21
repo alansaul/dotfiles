@@ -13,6 +13,8 @@ import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js'
 import { liteAdaptor } from 'mathjax-full/js/adaptors/liteAdaptor.js'
 import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html.js'
 
+let imageHeight = 60
+
 const adaptor = liteAdaptor()
 RegisterHTMLHandler(adaptor)
 
@@ -27,9 +29,8 @@ const mathjax_options = {
   containerWidth: 1280
 }
 
-let imageHeight = 30
 let sharpOptions = {
-    density: 300,
+  density: 300,
 }
 
 const resizedSvgToSharp = async (
@@ -77,35 +78,35 @@ const pngBufferToClipboard = async (pngBuffer: Buffer) => {
 
 
 const latexToPngBuffer = async (latex: string) => {
-    const node = mathjax_document.convert(latex, mathjax_options)
-    const svg = `${adaptor.innerHTML(node)}`
-    const sharpBuffer = await resizedSvgToSharp(
-        svg, {height: imageHeight}, sharpOptions,
-    )
-    const pngBuffer = await sharpBuffer.png().toBuffer()
-    return pngBuffer
+  const node = mathjax_document.convert(latex, mathjax_options)
+  const svg = `${adaptor.innerHTML(node)}`
+  const sharpBuffer = await resizedSvgToSharp(
+    svg, { height: imageHeight}, sharpOptions,
+  )
+  const pngBuffer = await sharpBuffer.png().toBuffer()
+  return pngBuffer
 }
 
 
 let latexToPng = async (latex: string) => {
-    const pngBuffer = await latexToPngBuffer(latex)
-    const b64 = pngBuffer.toString('base64')
-    const encoded = 'data:image/png;base64,' + b64;
-    const img = `<img src="${encoded}" />`
-    return img
+  const pngBuffer = await latexToPngBuffer(latex)
+  const b64 = pngBuffer.toString('base64')
+  const encoded = 'data:image/png;base64,' + b64;
+  const img = `<img src="${encoded}" />`
+  return img
 }
 
 
-let preview = async (input: string ) => {
-    let innerText = ''
-    if (input) {
-        try {
-            innerText = await latexToPng(input)
-        } catch (err) {
-            innerText = err.message
-        }
+let preview = async (input: string) => {
+  let innerText = ''
+  if (input) {
+    try {
+      innerText = await latexToPng(input)
+    } catch (err) {
+      innerText = err.message
     }
-    return `<div class="min-w-full min-h-full bg-white"><div class="p-3">${innerText}</div></div>`
+  }
+  return `<div class="min-w-full min-h-full bg-white"><div class="p-3">${innerText}</div></div>`
 }
 
 
@@ -113,7 +114,7 @@ let db = await store('latex', {
   history: [],
 })
 
-  
+
 const reloadLatexHistory = async () => {
   let latexHistory = await db.get("history") as string[]
   latexHistory.reverse()
@@ -152,7 +153,7 @@ let actions: Action[] = [
   {
     shortcut: `${cmd}+e`,
     name: "Edit",
-    visible: true,
+    // visible: true,
     onAction: async (input, state) => {
       const selectedValue = state?.focused?.value
       setInput(selectedValue ? selectedValue : "")
@@ -162,7 +163,7 @@ let actions: Action[] = [
   {
     shortcut: `${cmd}+d`,
     name: "Delete",
-    visible: true,
+    // visible: true,
     onAction: async (input, state) => {
       const latexHistory = await reloadLatexHistory()
       let filteredLatexHistory = latexHistory.filter((v: string) => {
@@ -191,13 +192,35 @@ let actions: Action[] = [
   },
 ]
 
-await arg({
-  name: "Latex To Image",
-  height: 150,
-  input: arg?.input || "",
-  placeholder: "Latex to convert to image",
-  preventCollapse: true,
-  onNoChoices: async (input) => {
-    setPanel(await preview(input ? input : ""));
-  },
-}, choicesOrPanel, actions)
+
+let createAndLoadLatex = async () => {
+  while (true) {
+    await arg({
+      name: "Latex To Image",
+      height: 150,
+      input: arg?.input || "",
+      placeholder: "Latex to convert to image",
+      preventCollapse: true,
+      onNoChoices: async (input) => {
+        setPanel(await preview(input ? input : ""));
+      },
+    }, choicesOrPanel, actions)
+  }
+}
+
+let changeSettings = async () => {
+  while (true) {
+    const [height] = await fields([
+      { label: "Image Height", value: "30", min: 0, },
+    ])
+    const parsedHeight = parseInt(height)
+    if (!Number.isNaN(parsedHeight)) {
+      imageHeight = parsedHeight
+    }
+    await arg("Empty - tab back")
+    setTab("Latex")
+  }
+}
+
+onTab("Latex", createAndLoadLatex)
+onTab("Config", changeSettings)
