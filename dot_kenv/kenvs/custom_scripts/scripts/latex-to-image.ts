@@ -13,7 +13,13 @@ import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js'
 import { liteAdaptor } from 'mathjax-full/js/adaptors/liteAdaptor.js'
 import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html.js'
 
-let imageHeight = 60
+const defaultImageHeight = 60
+let db = await store('latex', {
+  imageHeight: defaultImageHeight,
+  history: [],
+})
+let imageHeight: number = await db.get("imageHeight") as number
+imageHeight = imageHeight ? imageHeight : defaultImageHeight
 
 const adaptor = liteAdaptor()
 RegisterHTMLHandler(adaptor)
@@ -81,7 +87,7 @@ const latexToPngBuffer = async (latex: string) => {
   const node = mathjax_document.convert(latex, mathjax_options)
   const svg = `${adaptor.innerHTML(node)}`
   const sharpBuffer = await resizedSvgToSharp(
-    svg, { height: imageHeight}, sharpOptions,
+    svg, { height: imageHeight }, sharpOptions,
   )
   const pngBuffer = await sharpBuffer.png().toBuffer()
   return pngBuffer
@@ -109,10 +115,6 @@ let preview = async (input: string) => {
   return `<div class="min-w-full min-h-full bg-white"><div class="p-3">${innerText}</div></div>`
 }
 
-
-let db = await store('latex', {
-  history: [],
-})
 
 
 const reloadLatexHistory = async () => {
@@ -210,14 +212,18 @@ let createAndLoadLatex = async () => {
 let changeSettings = async () => {
   while (true) {
     const [height] = await fields({
-      fields:[{label: "Image Height", value: "30", min: 0}],
-      onSubmit: (input, state) => {
+      fields: [{ label: "Image Height", value: imageHeight.toString(), min: 0 }],
+      onSubmit: async (input, state) => {
         // To set the tab, UI still needs to be available, so do it on submit
         const height = state.value?.["0"]
         const parsedHeight = parseInt(height)
         if (!Number.isNaN(parsedHeight)) {
           imageHeight = parsedHeight
+          await db.set("imageHeight", imageHeight)
         }
+        setTab("Latex")
+      },
+      onEscape: async (input, state) => {
         setTab("Latex")
       }
     })
