@@ -3,9 +3,6 @@
 import "@johnlindquist/kit"
 import { Action } from "@johnlindquist/kit"
 import { Channel } from "@johnlindquist/kit/core/enum"
-import { ChannelHandler } from "@johnlindquist/kit/types/core"
-
-//import _ from "lodash"
 
 // I need to downgrade this to sharp@0.32.6 for linux as 0.33 seems to be broken
 import sharp from 'sharp'
@@ -16,12 +13,6 @@ import { SVG } from 'mathjax-full/js/output/svg.js'
 import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js'
 import { liteAdaptor } from 'mathjax-full/js/adaptors/liteAdaptor.js'
 import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html.js'
-import { PromptConfig } from "@johnlindquist/kit"
-
-// import { NativeImage, Clipboard} from "electron"
-// import pkg from "electron"
-// const { clipboard } = pkg
-
 
 const adaptor = liteAdaptor()
 RegisterHTMLHandler(adaptor)
@@ -39,17 +30,7 @@ const mathjax_options = {
 
 let imageHeight = 30
 let sharpOptions = {
-    density: 72,
-}
-
-let base64ToBlob = (base64: string) => {
-  const byteCharacters = atob(base64);
-  const byteNumbers = new Array(byteCharacters.length);
-  for (let i = 0; i < byteCharacters.length; i++) {
-    byteNumbers[i] = byteCharacters.charCodeAt(i);
-  }
-  const byteArray = new Uint8Array(byteNumbers);
-  return new Blob([byteArray], { type: 'image/png' });
+    density: 300,
 }
 
 const resizedSvgToSharp = async (
@@ -57,6 +38,7 @@ const resizedSvgToSharp = async (
   { width, height }: { width?: number; height?: number },
   options: sharp.SharpOptions,
 ) => {
+  // resize svg to image buffer, keeping the same pixel density
   const instance = sharp(Buffer.from(p), options)
 
   const metadata = await instance.metadata()
@@ -89,33 +71,30 @@ const resizedSvgToSharp = async (
   )
 }
 
-let latexToPng = async (latex: string) => {
+
+const pngBufferToClipboard = async (pngBuffer: Buffer) => {
+  let filePath = tmpPath("latex.png")
+  await writeFile(filePath, pngBuffer)
+  await sendWait(Channel.CLIPBOARD_WRITE_IMAGE, filePath)
+  // await sendWait(Channel.CLIPBOARD_WRITE_IMAGE, pngBuffer)
+}
+
+
+const latexToPngBuffer = async (latex: string) => {
     const node = mathjax_document.convert(latex, mathjax_options)
     const svg = `${adaptor.innerHTML(node)}`
-
-    // let sharpBuffer = await sharp(Buffer.from(svg), sharpOptions)
-    //     .resize({height: imageHeight})
     const sharpBuffer = await resizedSvgToSharp(
         svg, {height: imageHeight}, sharpOptions,
     )
-
     const pngBuffer = await sharpBuffer.png().toBuffer()
+    return pngBuffer
+}
 
-    // const imageBuffer = await sharp(Buffer.from(svg))
-    //     .resize({height: imageHeight})
-    //     .toBuffer()
 
+let latexToPng = async (latex: string) => {
+    const pngBuffer = await latexToPngBuffer(latex)
     const b64 = pngBuffer.toString('base64')
-    const blob = base64ToBlob(b64);
-    // let image = nativeImage.createFromBuffer(imageBuffer)
-    // clipboard.writeText(b64)
-    let filePath = tmpPath("latex.png")
-    await writeFile(filePath, pngBuffer)
-    await sendWait(Channel.CLIPBOARD_WRITE_IMAGE, filePath)
-    // await sendWait(Channel.CLIPBOARD_WRITE_TEXT, "bye")
-    // await sendWait(Channel.COPY_PATH_AS_PICTURE, {value: blob})
     const encoded = 'data:image/png;base64,' + b64;
-    // await copy(encoded)
     const img = `<img src="${encoded}" />`
     return img
 }
@@ -137,12 +116,14 @@ let preview = async (input: string ) => {
 let db = await store('latex', {
   history: [],
 })
+
   
 const reloadLatexHistory = async () => {
   let latexHistory = await db.get("history") as string[]
   latexHistory.reverse()
   return latexHistory
 }
+
 
 const reloadChoices = async () => {
   const latexHistory = await reloadLatexHistory()
@@ -158,31 +139,20 @@ const reloadChoices = async () => {
   return choices
 }
 
+
 let choicesOrPanel = await reloadChoices()
 
-
 let actions: Action[] = [
-  // {
-  //   shortcut: `${cmd}+c`,
-  //   name: "Copy",
-  //   visible: true,
-  //   onAction: async (input, state) => {
-  //     state?.preview  // this contains the img
-  //   },
-  // },
-  // {
-  //   name: "Change preview size",
-  //   visible: true,
-  //   onAction: async (input, state) => {
-  //     if (!input){
-  //       return
-  //     }
-  //     const inputAsNumber: number = parseInt(input)
-  //     if (inputAsNumber) {
-  //       imageHeight = inputAsNumber
-  //     }
-  //   },
-  // },
+  {
+    shortcut: `${cmd}+c`,
+    name: "Copy",
+    visible: true,
+    onAction: async (input, state) => {
+      const selectedValue = state?.focused?.value
+      const pngBuffer = await latexToPngBuffer(selectedValue)
+      await pngBufferToClipboard(pngBuffer)
+    },
+  },
   {
     shortcut: `${cmd}+e`,
     name: "Edit",
@@ -225,8 +195,6 @@ let actions: Action[] = [
   },
 ]
 
-sendWait(Channel.CLIPBOARD_WRITE_TEXT, "hello")
-
 await arg({
   name: "Latex To Image",
   height: 150,
@@ -237,36 +205,3 @@ await arg({
     setPanel(await preview(input ? input : ""));
   },
 }, choicesOrPanel, actions)
-
-
-// Use preview?
-// let promptConfig: PromptConfig = {
-//     placeholder: "Latex to convert",
-//     height: 150,
-//     itemHeight: 150,
-// }
-// await arg(
-//     promptConfig, choicesOrPanel//, actionsOrPreview
-// )
-
-// let latex = await arg("Latex to convert")
-// let img = await latexToPng(latex)
-
-// await div(
-//     {
-//         resize: true,
-//         height: 500,
-//         width: 500,
-//         html: md(img),
-//     },
-//     "w-screen bg-white"
-// )
-
-// await hide()
-// await keyboard.pressKey(Key.LeftSuper, Key.C)
-
-// appside:
-// kitMessageMap.COPY_PATH_AS_PICTURE: (data) => {
-//   clipboard.writeImage(data.value as any);
-// },
-// sendWait(Channel.COPY_PATH_AS_PICTURE, )
