@@ -1,7 +1,7 @@
 // Name: Latex to Image
 
 import "@johnlindquist/kit"
-import { Action } from "@johnlindquist/kit"
+import { Action, Choice } from "@johnlindquist/kit"
 
 // I need to downgrade this to sharp@0.32.6 for linux as 0.33 seems to be broken
 import sharp from 'sharp'
@@ -13,7 +13,13 @@ import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js'
 import { liteAdaptor } from 'mathjax-full/js/adaptors/liteAdaptor.js'
 import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html.js'
 
-let imageHeight = 60
+const defaultImageHeight = 60
+let db = await store('latex', {
+  imageHeight: defaultImageHeight,
+  history: [],
+})
+let imageHeight: number = await db.get("imageHeight") as number
+imageHeight = imageHeight ? imageHeight : defaultImageHeight
 
 const adaptor = liteAdaptor()
 RegisterHTMLHandler(adaptor)
@@ -77,18 +83,18 @@ const pngBufferToClipboard = async (pngBuffer: Buffer) => {
 }
 
 
-const latexToPngBuffer = async (latex: string) => {
+const latexToPngBuffer = async (latex: string): Promise<Buffer> => {
   const node = mathjax_document.convert(latex, mathjax_options)
   const svg = `${adaptor.innerHTML(node)}`
   const sharpBuffer = await resizedSvgToSharp(
-    svg, { height: imageHeight}, sharpOptions,
+    svg, { height: imageHeight }, sharpOptions,
   )
   const pngBuffer = await sharpBuffer.png().toBuffer()
   return pngBuffer
 }
 
 
-let latexToPng = async (latex: string) => {
+let latexToPng = async (latex: string): Promise<string> => {
   const pngBuffer = await latexToPngBuffer(latex)
   const b64 = pngBuffer.toString('base64')
   const encoded = 'data:image/png;base64,' + b64;
@@ -97,7 +103,7 @@ let latexToPng = async (latex: string) => {
 }
 
 
-let preview = async (input: string) => {
+let preview = async (input: string): Promise<string> => {
   let innerText = ''
   if (input) {
     try {
@@ -110,34 +116,38 @@ let preview = async (input: string) => {
 }
 
 
-let db = await store('latex', {
-  history: [],
-})
 
-
-const reloadLatexHistory = async () => {
+const reloadLatexHistory = async (): Promise<string[]> => {
   let latexHistory = await db.get("history") as string[]
   latexHistory.reverse()
   return latexHistory
 }
 
 
-const reloadChoices = async () => {
+const reloadChoices = async (): Promise<Choice<any>[]> => {
   const latexHistory = await reloadLatexHistory()
-  let choices = latexHistory.map((l) => {
+  let choices = latexHistory.map((latex: string) => {
     return {
-      name: `${l}`,
+      name: latex,
       preview: async () => {
-        return await preview(l)
+        return await preview(latex)
       },
-      value: l
+      value: latex
     }
   })
   return choices
 }
 
 
-let choicesOrPanel = await reloadChoices()
+const addToLatexHistory = async (input: string) => {
+  if (!input) {
+    return
+  }
+  let latexHistory = await reloadLatexHistory()
+  latexHistory?.push(input)
+  await db.set('history', latexHistory)
+}
+
 
 let actions: Action[] = [
   {
@@ -157,7 +167,6 @@ let actions: Action[] = [
     onAction: async (input, state) => {
       const selectedValue = state?.focused?.value
       setInput(selectedValue ? selectedValue : "")
-      inspect(state)
     },
   },
   {
@@ -171,8 +180,8 @@ let actions: Action[] = [
       })
       filteredLatexHistory.reverse()  // reverse it back into time ordered
       await db.set('history', filteredLatexHistory)
-      setChoices(await reloadChoices())
       setInput("")
+      setChoices(await reloadChoices())
     }
   },
   {
@@ -180,21 +189,26 @@ let actions: Action[] = [
     name: "Save",
     visible: true,
     onAction: async (input, state) => {
-      if (!input) {
-        return
-      }
-      let latexHistory = await reloadLatexHistory()
-      latexHistory?.push(input)
-      await db.set('history', latexHistory)
-      setChoices(await reloadChoices())
+      await addToLatexHistory(input)
       setInput("")
+      setChoices(await reloadChoices())
     }
   },
 ]
 
 
+// let choices = Object.assign(reloadChoices, {
+//   preload: false
+// });
+// let choices = async (): Promise<Choice<any>[]> => {
+//   let loadedChoices = await reloadChoices()
+//   setChoices(loadedChoices)
+//   return loadedChoices
+// }
+
 let createAndLoadLatex = async () => {
   while (true) {
+    let choices = await reloadChoices()
     await arg({
       name: "Latex To Image",
       height: 150,
@@ -204,21 +218,33 @@ let createAndLoadLatex = async () => {
       onNoChoices: async (input) => {
         setPanel(await preview(input ? input : ""));
       },
-    }, choicesOrPanel, actions)
+      onSubmit: async (input, state) => {
+        await addToLatexHistory(input)
+        setInput("")
+        setChoices(await reloadChoices())
+      }
+    }, choices, actions)
   }
 }
 
 let changeSettings = async () => {
   while (true) {
-    const [height] = await fields([
-      { label: "Image Height", value: "30", min: 0, },
-    ])
-    const parsedHeight = parseInt(height)
-    if (!Number.isNaN(parsedHeight)) {
-      imageHeight = parsedHeight
-    }
-    await arg("Empty - tab back")
-    setTab("Latex")
+    const [height] = await fields({
+      fields: [{ label: "Image Height", value: imageHeight.toString(), min: 0 }],
+      onSubmit: async (input, state) => {
+        // To set the tab, UI still needs to be available, so do it on submit
+        const height = state.value?.["0"]
+        const parsedHeight = parseInt(height)
+        if (!Number.isNaN(parsedHeight)) {
+          imageHeight = parsedHeight
+          await db.set("imageHeight", imageHeight)
+        }
+        setTab("Latex")
+      },
+      onEscape: async (input, state) => {
+        setTab("Latex")
+      }
+    })
   }
 }
 
